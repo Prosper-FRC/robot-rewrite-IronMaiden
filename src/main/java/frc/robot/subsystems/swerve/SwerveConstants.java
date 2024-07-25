@@ -2,19 +2,30 @@ package frc.robot.subsystems.swerve;
 
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
-
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 
 public class SwerveConstants {
-    
-    public static final double wheelCircumference = 0.0;
+    // in order to fix the errors not displaying on the newly cloned repo, reboot VS Code
 
+    public static final double wheelCircumference = 0.0;
+    public static final double trackWidth = Units.inchesToMeters(0.0);
+    public static final double wheelBase = Units.inchesToMeters(0.0);
     public static final double driveGearRatio = 0.0;
     public static final double azimuthGearRatio = 0.0;
+
+     public static final SwerveDriveKinematics swerveKinematics = new SwerveDriveKinematics(
+        new Translation2d(wheelBase / 2.0, trackWidth / 2.0),
+        new Translation2d(wheelBase / 2.0, -trackWidth / 2.0),
+        new Translation2d(-wheelBase / 2.0, trackWidth / 2.0),
+        new Translation2d(-wheelBase / 2.0, -trackWidth / 2.0));
 
     public static final double driveRevToMeters = wheelCircumference / driveGearRatio;
     public static final double driveRPMToMetersPerSecond = driveRevToMeters / 60;
     public static final double DegreesPerTurnRotation = 360 / azimuthGearRatio;
+
+    public static boolean invertGyro = false; 
 
     public static final double driveMotorP = 0.0;
     public static final double driveMotorI = 0.0;
@@ -28,6 +39,8 @@ public class SwerveConstants {
     public static final double azimuthMotorP = 0.0;
     public static final double azimuthMotorI = 0.0;
     public static final double azimuthMotorD = 0.0;
+
+    public static final double rotPIDTolerance = 1;
 
     public static final double azimuthMaxVel = 0.0;
     public static final double azimuthMaxAccel = 0.0;
@@ -49,11 +62,11 @@ public class SwerveConstants {
 
     // In meters per second:
     public static final double maxSpeed = 0.0; // 4.0
+    public static final double maxAngularVelocity = 0.0;
 
     public static final int gyroID = 0;
 
-    public static final double trackWidth = Units.inchesToMeters(0.0);
-    public static final double wheelBase = Units.inchesToMeters(0.0);
-    public static final double nothing = 0;
+
+    
 
 }
