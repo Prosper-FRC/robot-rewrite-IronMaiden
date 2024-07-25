@@ -17,6 +17,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.lib.RevSwerveModuleConstants;
 
 public class Module extends SubsystemBase {
     public int moduleNumber;
@@ -37,21 +38,21 @@ public class Module extends SubsystemBase {
     private int driveMotorID;
     private int cancoderID;
 
-    public Module(int moduleNumber, int azimuthMotorID, int driveMotorID, int cancoderID, Rotation2d angleOffset) {
+    public Module(int moduleNumber, RevSwerveModuleConstants moduleConstants) {
         this.moduleNumber = moduleNumber;
         this.angleOffset = angleOffset;
 
-        this.azimuthMotorID = azimuthMotorID;
-        this.driveMotorID = driveMotorID;
-        this.cancoderID = cancoderID;
+        // this.azimuthMotorID = azimuthMotorID;
+        // this.driveMotorID = driveMotorID;
+        // this.cancoderID = cancoderID;
 
-        azimuthMotor = new CANSparkMax(azimuthMotorID, MotorType.kBrushless);
+        azimuthMotor = new CANSparkMax(moduleConstants.angleMotorID, MotorType.kBrushless);
         configureAzimuth();
 
-        driveMotor = new CANSparkMax(driveMotorID, MotorType.kBrushless);
+        driveMotor = new CANSparkMax(moduleConstants.driveMotorID, MotorType.kBrushless);
         configureDrive();
 
-        CANCoder = new CANcoder(cancoderID);
+        CANCoder = new CANcoder(moduleConstants.cancoderID);
 
     }
 

@@ -5,6 +5,7 @@ import com.ctre.phoenix6.hardware.Pigeon2;
 // import com.fasterxml.jackson.databind.Module;
 // import frc.lib.math.GeometryUtils;
 
+import frc.robot.SwerveConfig;
 import frc.robot.lib.GeometryUtils;
 import frc.robot.subsystems.swerve.Module;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -32,10 +33,10 @@ public Swerve() {
     swerveMods = new Module[] {
         //public Module(int moduleNumber, int azimuthMotorID, int driveMotorID, int cancoderID, Rotation2d angleOffset) {
 
-        new Module(0, 0, 0, 0, new Rotation2d(0)),
-        new Module(1, 0, 0, 0, new Rotation2d(0)),
-        new Module(2, 0, 0, 0, new Rotation2d(0)),
-        new Module(3, 0, 0, 0, new Rotation2d(0)),
+        new Module(0, SwerveConfig.Swerve.Mod0.constants),
+        new Module(1, SwerveConfig.Swerve.Mod1.constants),
+        new Module(2, SwerveConfig.Swerve.Mod2.constants),
+        new Module(3, SwerveConfig.Swerve.Mod3.constants),
     };
 
     swerveOdometry = new SwerveDriveOdometry(SwerveConstants.swerveKinematics, getYaw(), getModulePositions());
