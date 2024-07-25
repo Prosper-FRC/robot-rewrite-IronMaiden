@@ -24,30 +24,33 @@ public class RobotContainer {
 
   private final Swerve swerve;
 
-  private BooleanSupplier dampen;
+  private boolean dampen;
 
   public RobotContainer() {
     swerve = new Swerve();
 
-   /*  swerve.setDefaultCommand(
+     swerve.setDefaultCommand(
       new SwerveCommand(
         swerve, 
         () -> driverController.getLeftY(),
         () -> driverController.getLeftX(), 
         () -> driverController.getRightX(), 
         () -> false, 
-        () -> dampen, 
-        1)
-    );*/
+        () -> 1)
+    );
     configureBindings();
   }
 
 
   
   private void configureBindings() {
-    //driverController.rightBumper().onTrue(
-     // new InstantCommand(() -> dampen = true)
-   // );
+    driverController.rightBumper().onTrue(
+      new InstantCommand(() -> swerve.setSniperMode())
+    );
+
+    //driverController.a().onTrue(
+      //new InstantCommand()
+    //);
   }
 
   

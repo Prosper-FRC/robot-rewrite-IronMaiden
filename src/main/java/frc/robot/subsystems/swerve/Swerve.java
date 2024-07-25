@@ -24,6 +24,7 @@ public class Swerve extends SubsystemBase {
     public Module[] swerveMods;
     public Pigeon2 gyro;
 
+    private static boolean sniperMode = false;
 
 public Swerve() {
     gyro = new Pigeon2(SwerveConstants.gyroID);
@@ -70,6 +71,8 @@ public void drive(Translation2d translation, double rotation, boolean fieldRelat
         rotation
     );
 
+
+
     desiredChassisSpeeds = correctForDynamics(desiredChassisSpeeds);
 
     SwerveModuleState[] swerveModuleStates = SwerveConstants.swerveKinematics.toSwerveModuleStates(desiredChassisSpeeds);
@@ -78,6 +81,10 @@ public void drive(Translation2d translation, double rotation, boolean fieldRelat
     for (Module mod : swerveMods) {
         mod.setDesiredState(swerveModuleStates[mod.getModuleNumber()]);
     }
+}
+
+public void setSniperMode() {
+    sniperMode = true;
 }
 
 public SwerveModulePosition[] getModulePositions() {

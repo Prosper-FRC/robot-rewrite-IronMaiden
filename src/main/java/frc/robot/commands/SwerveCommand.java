@@ -29,13 +29,12 @@ public class SwerveCommand extends Command {
     private DoubleSupplier strafeSup;
     private DoubleSupplier rotationSup;
     private BooleanSupplier robotCentricSup;
-    private BooleanSupplier dampen;
 
     private DoubleSupplier speedDial;
 
     private PIDController rotationController;
 
-  public SwerveCommand(Swerve swerve, DoubleSupplier translationSup, DoubleSupplier strafeSup, DoubleSupplier rotationSup, BooleanSupplier robotOrientSup, BooleanSupplier dampen, DoubleSupplier speedDial) {
+  public SwerveCommand(Swerve swerve, DoubleSupplier translationSup, DoubleSupplier strafeSup, DoubleSupplier rotationSup, BooleanSupplier robotOrientSup, DoubleSupplier speedDial) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.swerve = swerve;
     addRequirements(swerve);
@@ -48,7 +47,6 @@ public class SwerveCommand extends Command {
     this.strafeSup = strafeSup;
     this.rotationSup = rotationSup;
     this.robotCentricSup = robotOrientSup;
-    this.dampen = dampen;
     this.speedDial = speedDial;
   }
 
@@ -59,9 +57,9 @@ public class SwerveCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double translationVal = MathUtil.applyDeadband(translationSup.getAsDouble(), Constants.stickDeadband) * (dampen.getAsBoolean() ? 0.2 : 1) * ((speedDial.getAsDouble() + 1) / 2);
-    double strafeVal = MathUtil.applyDeadband(strafeSup.getAsDouble(), Constants.stickDeadband) * (dampen.getAsBoolean() ? 0.2 : 1) * ((speedDial.getAsDouble() + 1) / 2);
-    double  rotationVal = MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.stickDeadband) * (dampen.getAsBoolean() ? 0.2 : 1) * ((speedDial.getAsDouble() + 1) / 2);
+    double translationVal = translationSup.getAsDouble();
+    double strafeVal = strafeSup.getAsDouble();
+    double  rotationVal = rotationSup.getAsDouble();
   
   switch(States.driveState){
             case d0:
@@ -94,7 +92,7 @@ public class SwerveCommand extends Command {
         }
 
         swerve.drive(
-          new Translation2d(translationVal, strafeVal).times (SwerveConstants.maxSpeed),
+          new Translation2d(translationVal, strafeVal).times(SwerveConstants.maxSpeed),
           rotationVal,
           robotCentricSup.getAsBoolean());
   
