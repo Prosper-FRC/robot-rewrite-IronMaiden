@@ -8,7 +8,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import frc.lib.util.swerveUtil.CTREModuleState;
 import frc.lib.util.swerveUtil.RevSwerveModuleConstants;
 
-import com.ctre.phoenix.sensors.CANCoder;
+// import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
@@ -27,7 +28,7 @@ public class SwerveMod implements SwerveModule
     private CANSparkMax mAngleMotor;
     private CANSparkMax mDriveMotor;
 
-    private CANCoder angleEncoder;
+    private CANcoder angleEncoder;
     private RelativeEncoder relAngleEncoder;
     private RelativeEncoder relDriveEncoder;
 
@@ -47,7 +48,7 @@ public class SwerveMod implements SwerveModule
         configDriveMotor();
 
          /* Angle Encoder Config */
-        angleEncoder = new CANCoder(moduleConstants.cancoderID);
+        angleEncoder = new CANcoder(moduleConstants.cancoderID);
         configEncoders();
 
 
@@ -59,9 +60,10 @@ public class SwerveMod implements SwerveModule
     {     
         // absolute encoder   
       
-        angleEncoder.configFactoryDefault();
-        angleEncoder.configAllSettings(new SwerveConfig().canCoderConfig);
+        // angleEncoder.configFactoryDefault();
+        // angleEncoder.configAllSettings(new SwerveConfig().canCoderConfig);
        
+        angleEncoder.getConfigurator().apply(new SwerveConfig().canCoderConfig);
         relDriveEncoder = mDriveMotor.getEncoder();
         relDriveEncoder.setPosition(0);
 
@@ -179,6 +181,13 @@ public class SwerveMod implements SwerveModule
     }
 
    
+    public CANSparkMax getDriveMotor() {
+        return mDriveMotor;
+    }
+
+    public CANSparkMax getAngleMotor() {
+        return mAngleMotor;
+    }
 
     private Rotation2d getAngle()
     {
@@ -188,7 +197,7 @@ public class SwerveMod implements SwerveModule
     public Rotation2d getCanCoder()
     {
         
-        return Rotation2d.fromDegrees(angleEncoder.getAbsolutePosition());
+        return Rotation2d.fromRotations(angleEncoder.getAbsolutePosition().getValueAsDouble());
         //return getAngle();
     }
 

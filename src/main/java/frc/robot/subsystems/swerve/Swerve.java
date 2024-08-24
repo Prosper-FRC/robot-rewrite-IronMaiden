@@ -1,6 +1,7 @@
 package frc.robot.subsystems.swerve;
 
 import frc.lib.math.GeometryUtils;
+import frc.robot.RobotContainer;
 import frc.robot.SwerveConstants;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -9,7 +10,8 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 
 import java.text.BreakIterator;
 
-import com.ctre.phoenix.sensors.Pigeon2;
+import com.ctre.phoenix6.configs.Pigeon2Configuration;
+import com.ctre.phoenix6.hardware.Pigeon2;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -31,7 +33,9 @@ public class Swerve extends SubsystemBase {
     public Swerve() {
         
         gyro = new Pigeon2(SwerveConstants.REV.pigeonID);
-        gyro.configFactoryDefault();
+       // gyro.configFactoryDefault();
+        Pigeon2Configuration PigeonConfig = new Pigeon2Configuration();
+       gyro.getConfigurator().apply(PigeonConfig);
         
      
 
@@ -134,16 +138,26 @@ public class Swerve extends SubsystemBase {
     }
 
     public Rotation2d getYaw() {
-        return (SwerveConfig.invertGyro) ? Rotation2d.fromDegrees(360 - gyro.getYaw()) : Rotation2d.fromDegrees(gyro.getYaw());
+        return (SwerveConfig.invertGyro) ? Rotation2d.fromDegrees(360 - gyro.getYaw().getValueAsDouble()) : Rotation2d.fromDegrees(gyro.getYaw().getValueAsDouble());
     }
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("yaw", gyro.getYaw());
+        SmartDashboard.putNumber("yaw", gyro.getYaw().getValueAsDouble());
         for(SwerveModule mod : mSwerveMods) {
-            SmartDashboard.putNumber("REV Mod " + mod.getModuleNumber() + " Cancoder", mod.getCanCoder().getDegrees());
-            SmartDashboard.putNumber("REV Mod " + mod.getModuleNumber() + " Integrated", mod.getPosition().angle.getDegrees());
-            SmartDashboard.putNumber("REV Mod " + mod.getModuleNumber() + " Velocity", mod.getState().speedMetersPerSecond);    
+            // SmartDashboard.putNumber("REV Mod " + mod.getModuleNumber() + " Cancoder", mod.getCanCoder().getDegrees());
+            // SmartDashboard.putNumber("REV Mod " + mod.getModuleNumber() + " Integrated", mod.getPosition().angle.getDegrees());
+            // SmartDashboard.putNumber("REV Mod " + mod.getModuleNumber() + " Velocity", mod.getState().speedMetersPerSecond);    
+            // SmartDashboard.putNumber("Abs encoder: " + mod.getModuleNumber(), mod.getCanCoder().getDegrees());
+            SmartDashboard.putNumber("Rev Mod: " + mod.getModuleNumber() + "Drive Amp ", mod.getDriveMotor().getOutputCurrent());
+            SmartDashboard.putNumber("Rev Mod: " + mod.getModuleNumber() + "Azimuth Amp ", mod.getAngleMotor().getOutputCurrent());
+
+           // SmartDashboard.putData("haha", mod.getMo);
+
+         //  SmartDashboard.putNumber("Position error: ", )
+
         }
+
+        SmartDashboard.putBoolean("Robot centric", RobotContainer.centric);
     }
 }

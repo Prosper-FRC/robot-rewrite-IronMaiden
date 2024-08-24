@@ -1,12 +1,14 @@
 package frc.robot.subsystems.swerve;
 
-import com.ctre.phoenix.sensors.AbsoluteSensorRange;
-import com.ctre.phoenix.sensors.CANCoderConfiguration;
-import com.ctre.phoenix.sensors.SensorInitializationStrategy;
-import com.ctre.phoenix.sensors.SensorTimeBase;
+//import com.ctre.phoenix.sensors.AbsoluteSensorRange;
+//import com.ctre.phoenix.sensors.CANCoderConfiguration;
+// import com.ctre.phoenix.sensors.SensorInitializationStrategy;
+// import com.ctre.phoenix.sensors.SensorTimeBase;
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 import com.revrobotics.CANSparkBase.IdleMode;
 
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+// import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
@@ -16,7 +18,7 @@ import frc.lib.util.swerveUtil.COTSFalconSwerveConstants;
 public class SwerveConfig 
 {
     
-    public CANCoderConfiguration canCoderConfig;
+    public CANcoderConfiguration canCoderConfig;
 
     //
     public static final IdleMode driveIdleMode = IdleMode.kBrake;
@@ -67,12 +69,12 @@ public class SwerveConfig
     public static final boolean canCoderInvert = chosenModule.canCoderInvert;
 
     /* Swerve Current Limiting */
-    public static final int angleContinuousCurrentLimit = 40;
+    public static final int angleContinuousCurrentLimit = 50;
     public static final int anglePeakCurrentLimit = 40;
     public static final double anglePeakCurrentDuration = 0.1;
     public static final boolean angleEnableCurrentLimit = true;
 
-    public static final int driveContinuousCurrentLimit = 40;
+    public static final int driveContinuousCurrentLimit = 50;
     public static final int drivePeakCurrentLimit = 60;
     public static final double drivePeakCurrentDuration = 0.1;
     public static final boolean driveEnableCurrentLimit = true;
@@ -83,7 +85,7 @@ public class SwerveConfig
     public static final double closedLoopRamp = 0.0;
 
     /* Angle Motor PID Values */
-    public static final double angleKP = 6.0;
+    public static final double angleKP = 0.2; // 6.0, 0.1
     public static final double angleKI = 0.0;
     public static final double angleKD = 0.15;
     public static final double angleKF = 0;
@@ -115,11 +117,12 @@ public class SwerveConfig
 
     public SwerveConfig()
     {
-        canCoderConfig = new CANCoderConfiguration();
-        canCoderConfig.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360;
-        canCoderConfig.sensorDirection = canCoderInvert;
-        canCoderConfig.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
-        canCoderConfig.sensorTimeBase = SensorTimeBase.PerSecond;
+        canCoderConfig = new CANcoderConfiguration();
+        // canCoderConfig.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360;
+        // canCoderConfig.sensorDirection = canCoderInvert;
+        // canCoderConfig.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
+        // canCoderConfig.sensorTimeBase = SensorTimeBase.PerSecond;
+        canCoderConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1;
     }
 }
 
