@@ -50,6 +50,7 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.commands.*;
 import frc.robot.subsystems.PoseEstimator;
 import frc.robot.subsystems.swerve.Swerve;
+import frc.robot.subsystems.arm.Arm;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -98,6 +99,7 @@ public class RobotContainer {
       new CommandXboxController(Constants.kOperatorControllerPort);
 
   private static Intake intake;
+private static Arm arm = new Arm();
 
 
   // Dashboard inputs
@@ -311,7 +313,52 @@ public class RobotContainer {
             new InstantCommand(() -> States.driveState = States.DriveStates.d270)).onFalse(
             new InstantCommand(() -> States.driveState = States.DriveStates.standard)
             );
+     operatorController
+        .a()
+        .whileTrue(
+            new InstantCommand(
+                () -> {
+                  arm.goToClimbDownPos();
+                }));
 
+    operatorController
+        .b()
+        .whileTrue(ampButtonBinding())
+        .onFalse(
+            new ParallelCommandGroup(
+                new InstantCommand(() -> arm.goToShootPos()),
+                new InstantCommand(() -> System.out.println("Intaking...")),
+                new InstantCommand(() -> System.out.println("Outtaking..."))));
+// operator
+//         .b()
+//         .whileTrue(ampButtonBinding())
+//         .onFalse(
+//             new ParallelCommandGroup(
+//                 new InstantCommand(() -> arm.goToShootPos()),
+//                 new InstantCommand(() -> intake.zero()),
+//                 new InstantCommand(() -> shooter.zero())));
+    operatorController
+        .y()
+        .whileTrue(
+            new InstantCommand(
+                () -> {
+                  arm.goToClimbUpPos();
+                }));
+
+    operatorController
+        .x()
+        .whileTrue(shootButtonBinding())
+        .onFalse(
+            new ParallelCommandGroup(
+                new InstantCommand(() -> arm.goToShootPos()),
+                new InstantCommand(() -> System.out.println("Intaking...")),
+                new InstantCommand(() -> System.out.println("Outtaking..."))));
+
+  
+
+  //  driver.rightBumper().onTrue(leds.toggleBlue());
+
+    driverController.rightTrigger().onTrue(new InstantCommand(() -> arm.climbOff()));
 
   }
 
