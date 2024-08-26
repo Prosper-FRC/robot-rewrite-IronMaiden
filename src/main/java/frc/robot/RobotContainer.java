@@ -86,13 +86,15 @@ public class RobotContainer {
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
     private final PoseEstimator s_PoseEstimator = new PoseEstimator();
+    private static Shooter shooter;
+
 
   // Subsystems
 
   // Controller
-  private static final CommandXboxController driver =
+  private static final CommandXboxController driverController =
       new CommandXboxController(Constants.kDriverControllerPort);
-  private static final CommandXboxController operator =
+  private static final CommandXboxController operatorController =
       new CommandXboxController(Constants.kOperatorControllerPort);
 
   private static Intake intake;
@@ -100,22 +102,7 @@ public class RobotContainer {
 
   // Dashboard inputs
 
-  public Command ampButtonBinding() {
-    return new SequentialCommandGroup(
-        new ParallelCommandGroup(new InstantCommand(() -> System.out.println("Shooter running at amp speed..."))),
-        new InstantCommand(() -> System.out.println("Arm to amp pos...")),
-        new WaitCommand(1.0),
-        new InstantCommand(() -> intake.intake()));
-  }
-
-  public Command shootButtonBinding() {
-    return new SequentialCommandGroup(
-        new ParallelCommandGroup(new InstantCommand(() -> System.out.println("Shooter running at speaker speed..."))),
-        new InstantCommand(() -> System.out.println("Arm to shoot pos...")),
-        new WaitCommand(1.0),
-        new InstantCommand(() -> intake.intake()));
-  }
-  ;
+  
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
@@ -131,6 +118,10 @@ public class RobotContainer {
             )
         );
 
+        intake = new Intake();
+        shooter = new Shooter();
+
+
 
 
 
@@ -144,45 +135,11 @@ public class RobotContainer {
      * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
-    private void configureButtonBindings() {
-        /* Driver Buttons */
-        zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
-
-        robotCentric.toggleOnTrue(new InstantCommand(() -> centric = !centric));
-
-        //heading lock bindings
-        up.onTrue(
-            new InstantCommand(() -> States.driveState = States.DriveStates.d90)).onFalse(
-            new InstantCommand(() -> States.driveState = States.DriveStates.standard)
-            );
-        left.onTrue(
-            new InstantCommand(() -> States.driveState = States.DriveStates.d180)).onFalse(
-            new InstantCommand(() -> States.driveState = States.DriveStates.standard)
-            );
-        right.onTrue(
-            new InstantCommand(() -> States.driveState = States.DriveStates.d0)).onFalse(
-            new InstantCommand(() -> States.driveState = States.DriveStates.standard)
-            );
-        down.onTrue(
-            new InstantCommand(() -> States.driveState = States.DriveStates.d270)).onFalse(
-            new InstantCommand(() -> States.driveState = States.DriveStates.standard)
-            );
-
-    }
-  // Subsystems
- // private final Drive drive;
-
-  // Controller
-  private static final CommandXboxController driver =
-      new CommandXboxController(Constants.kDriverControllerPort);
-  private static final CommandXboxController operator =
-      new CommandXboxController(Constants.kOperatorControllerPort);
-
+    
   // private static final LEDs leds = new LEDs();
   // public static final Arm arm = new Arm(operator.getHID(), leds);
 
   // private static Intake intake;
-  private static Shooter shooter;
   // private static Autonomous autonomous;
 
   // Dashboard inputs
@@ -205,75 +162,6 @@ public class RobotContainer {
   }
   ;
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
-
-    intake = new Intake();
-   // shooter = new Shooter(intake);
-
- //   leds.ladyChaser();
-
-    // Manual:
-    // arm.setDefaultCommand(new ArmCommand(() -> operator.getRightY(), arm));
-
-    // switch (Constants.currentMode) {
-    //   case REAL:
-    //     // Real robot, instantiate hardware IO implementations
-    //     drive =
-    //         new Drive(
-    //             new GyroIOPigeon2(),
-    //             new ModuleIOSparkMax(0),
-    //             new ModuleIOSparkMax(1),
-    //             new ModuleIOSparkMax(2),
-    //             new ModuleIOSparkMax(3));
-    //     break;
-
-      // case SIM:
-        // Sim robot, instantiate physics sim IO implementations
-        // drive =
-        //     new Drive(
-        //         new GyroIO() {},
-        //         new ModuleIOSim(),
-        //         new ModuleIOSim(),
-        //         new ModuleIOSim(),
-        //         new ModuleIOSim());
-        // break;
-
-      // default:
-        // Replayed robot, disable IO implementations
-    //     drive =
-    //         new Drive(
-    //             new GyroIO() {},
-    //             new ModuleIO() {},
-    //             new ModuleIO() {},
-    //             new ModuleIO() {},
-    //             new ModuleIO() {});
-    //     break;
-    // }
-
-    // autonomous = new Autonomous(intake, shooter, drive);
-
-    // Set up auto routines
-    // NamedCommands.registerCommand("Run Shoot", autonomous.SHOOT());
-
-    // autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
-
-    // // Set up autonomous pathplanner routines
-    // autoChooser.addOption("Auto: SHOOT", autonomous.SHOOT());
-    // // autoChooser.addOption("Auto: PL-MB", autonomous.PL_MB());
-    // // autoChooser.addOption("Auto: PL-MB-1P", autonomous.PL_MB_1P(0));
-    // // autoChooser.addOption("Auto: PL-MB-1P-L", autonomous.PL_MB_1P_L());
-    // // autoChooser.addOption("Auto: PL-MB-2P", autonomous.PL_MB_2P());
-    // // autoChooser.addOption("Auto: Auto PL-MB-1L", AutoBuilder.buildAuto("PL-M-1L"));
-    // autoChooser.addOption("Auto: Test", autonomous.test());
-    // autoChooser.addOption("Mobility", autonomous.MOBILITY());
-    // autoChooser.addOption("Mobility-Shoot", autonomous.SHOOT_MOBILITY());
-    // autoChooser.addOption("2P-Mobility", autonomous.SHOOT_MOBILITY_LOAD());
-
-    // Configure the button bindings
-    configureButtonBindings();
-  }
-
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
@@ -287,200 +175,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
 
     // right bumper intakes note and retracts to move note away from shooter wheels
-    operator
-        .leftBumper()
-        .whileTrue(
-            new InstantCommand(
-                () -> {
-                  intake.intake();
-                }))
-        .onFalse(intake.retract());
-
-    // 'a' button outtakes note
-    operator
-        .rightBumper()
-        .whileTrue(new InstantCommand(() -> intake.outtake()))
-        .onFalse(new InstantCommand(() -> intake.zero()));
-
-    // driver.y().onTrue(autonomous.SHOOT_MOBILITY());
-
-    /*// Left bumper shoots Speaker, now shootSpeaker also includes moving intake also.
-    operator
-        .leftTrigger()
-        .whileTrue(shooter.shootSpeaker())
-        .onFalse(
-            new InstantCommand(
-                () -> {
-                  shooter.zero();
-                  intake.zero();
-                }));
-
-    // Left joystick CLICK shoots amp, also moves intake using one button
-    operator
-        .rightTrigger()
-        .whileTrue(shooter.shootAmp())
-        .onFalse(
-            new InstantCommand(
-                () -> {
-                  shooter.zero();
-                  intake.zero();
-                }));*/
-
-    operator
-        .povUp()
-        .whileTrue(new InstantCommand(() -> System.out.println("Shooter in reverse...")))
-        .onFalse(
-            new InstantCommand(
-                () -> {
-                  System.out.println("Shooter speed = 0...");
-                  intake.zero();
-                }));
-
-    operator
-        .a()
-        .whileTrue(
-            new InstantCommand(
-                () -> {
-                  System.out.println("Arm in climb position...");
-                }));
-
-    operator
-        .b()
-        .whileTrue(ampButtonBinding())
-        .onFalse(
-            new ParallelCommandGroup(
-                new InstantCommand(() -> System.out.println("Arm in shoot position...")),
-                new InstantCommand(() -> intake.zero()),
-                new InstantCommand(() -> System.out.println("Shooter zeroed out..."))));
-
-    operator
-        .y()
-        .whileTrue(
-            new InstantCommand(
-                () -> {
-                  System.out.println("Arm in climb up pos...");
-                }));
-
-    operator
-        .x()
-        .whileTrue(shootButtonBinding())
-        .onFalse(
-            new ParallelCommandGroup(
-                new InstantCommand(() -> System.out.println("Arm in shoot pos...")),
-                new InstantCommand(() -> intake.zero()),
-                new InstantCommand(() -> System.out.println("Shooter zeroed..."))));
-
-    // drive.setDefaultCommand(
-    //     DriveCommands.joystickDrive(
-    //         drive, () -> -driver.getLeftY(), () -> -driver.getLeftX(), () -> driver.getRightX()));
-
-    // driver.leftBumper().onTrue(autonomous.SHOOT_MOBILITY_LOAD());
-
-    // driver.rightBumper().onTrue(leds.toggleBlue());
-
-    // driver.rightTrigger().onTrue(new InstantCommand(() -> arm.climbOff()));
-
-    // driver.a().onTrue(new InstantCommand(() -> Drive.resetGyro()));
-
-    /*
-    controller.x().onTrue(Commands.runOnce(drive::stopWithX, drive));
-
-    controller.b()
-        .onTrue(
-            Commands.runOnce(
-                    () ->
-                        drive.setPose(
-                            new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
-                    drive)
-                .ignoringDisable(true));
-
-    controller.a()
-        .whileTrue(
-            Commands.startEnd(
-                () -> flywheel.runVelocity(flywheelSpeedInput.get()), flywheel::stop, flywheel));
-    */
-
-
-    //intake = new Intake();
-    shooter = new Shooter();
-
- //   leds.ladyChaser();
-
-    // Manual:
-    // arm.setDefaultCommand(new ArmCommand(() -> operator.getRightY(), arm));
-
-    // switch (Constants.currentMode) {
-    //   case REAL:
-    //     // Real robot, instantiate hardware IO implementations
-    //     drive =
-    //         new Drive(
-    //             new GyroIOPigeon2(),
-    //             new ModuleIOSparkMax(0),
-    //             new ModuleIOSparkMax(1),
-    //             new ModuleIOSparkMax(2),
-    //             new ModuleIOSparkMax(3));
-    //     break;
-
-    //  case SIM:
-        // Sim robot, instantiate physics sim IO implementations
-      //   drive =
-      //       new Drive(
-      //           new GyroIO() {},
-      //           new ModuleIOSim(),
-      //           new ModuleIOSim(),
-      //           new ModuleIOSim(),
-      //           new ModuleIOSim());
-      //   break;
-
-      // default:
-        // Replayed robot, disable IO implementations
-    //     drive =
-    //         new Drive(
-    //             new GyroIO() {},
-    //             new ModuleIO() {},
-    //             new ModuleIO() {},
-    //             new ModuleIO() {},
-    //             new ModuleIO() {});
-    //     break;
-    // }
-
-  //  autonomous = new Autonomous(intake, shooter, drive);
-
-    // Set up auto routines
-   // NamedCommands.registerCommand("Run Shoot", autonomous.SHOOT());
-
-   // autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
-
-    // Set up autonomous pathplanner routines
-  //  autoChooser.addOption("Auto: SHOOT", autonomous.SHOOT());
-    // autoChooser.addOption("Auto: PL-MB", autonomous.PL_MB());
-    // autoChooser.addOption("Auto: PL-MB-1P", autonomous.PL_MB_1P(0));
-    // autoChooser.addOption("Auto: PL-MB-1P-L", autonomous.PL_MB_1P_L());
-    // autoChooser.addOption("Auto: PL-MB-2P", autonomous.PL_MB_2P());
-    // autoChooser.addOption("Auto: Auto PL-MB-1L", AutoBuilder.buildAuto("PL-M-1L"));
-    // autoChooser.addOption("Auto: Test", autonomous.test());
-    // autoChooser.addOption("Mobility", autonomous.MOBILITY());
-    // autoChooser.addOption("Mobility-Shoot", autonomous.SHOOT_MOBILITY());
-    // autoChooser.addOption("2P-Mobility", autonomous.SHOOT_MOBILITY_LOAD());
-
-    // Configure the button bindings
-    configureButtonBindings();
-  }
-
-  /**
-   * Use this method to define your button->command mappings. Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
-   * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-   */
-
-  // -------------------------------------------------------------------[Button
-  // Bindings]-----------------------------------------------------------------------
-
-  private void configureButtonBindings() {
-
-    // right bumper intakes note and retracts to move note away from shooter wheels
-    operator
+    operatorController
         .leftBumper()
         .whileTrue(
             new InstantCommand(
@@ -491,7 +186,7 @@ public class RobotContainer {
           () -> System.out.println("Intake retracting...")));
 
     // 'a' button outtakes note
-    operator
+    operatorController
         .rightBumper()
         .whileTrue(new InstantCommand(() -> System.out.println("Outtaking...")))
         .onFalse(new InstantCommand(() -> System.out.println("Intake zeroed...")));
@@ -520,7 +215,7 @@ public class RobotContainer {
                   intake.zero();
                 }));*/
 
-    operator
+    operatorController
         .povUp()
         .whileTrue(new InstantCommand(() -> shooter.setSpeedReverse()))
         .onFalse(
@@ -530,7 +225,7 @@ public class RobotContainer {
                   System.out.println("Intake zeroed...");
                 }));
 
-    operator
+    operatorController
         .a()
         .whileTrue(
             new InstantCommand(
@@ -538,7 +233,7 @@ public class RobotContainer {
                   System.out.println("Arm to climb down pos...");
                 }));
 
-    operator
+    operatorController
         .b()
         .whileTrue(ampButtonBinding())
         .onFalse(
@@ -547,7 +242,7 @@ public class RobotContainer {
                 new InstantCommand(() -> System.out.println("Intake zeroed...")),
                 new InstantCommand(() -> shooter.zero())));
 
-    operator
+    operatorController
         .y()
         .whileTrue(
             new InstantCommand(
@@ -555,7 +250,7 @@ public class RobotContainer {
                   System.out.println("Arm to climb up pos...");
                 }));
 
-    operator
+    operatorController
         .x()
         .whileTrue(shootButtonBinding())
         .onFalse(
@@ -593,6 +288,30 @@ public class RobotContainer {
             Commands.startEnd(
                 () -> flywheel.runVelocity(flywheelSpeedInput.get()), flywheel::stop, flywheel));
     */
+
+    /* Driver Buttons */
+        zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
+
+        robotCentric.toggleOnTrue(new InstantCommand(() -> centric = !centric));
+
+        //heading lock bindings
+        up.onTrue(
+            new InstantCommand(() -> States.driveState = States.DriveStates.d90)).onFalse(
+            new InstantCommand(() -> States.driveState = States.DriveStates.standard)
+            );
+        left.onTrue(
+            new InstantCommand(() -> States.driveState = States.DriveStates.d180)).onFalse(
+            new InstantCommand(() -> States.driveState = States.DriveStates.standard)
+            );
+        right.onTrue(
+            new InstantCommand(() -> States.driveState = States.DriveStates.d0)).onFalse(
+            new InstantCommand(() -> States.driveState = States.DriveStates.standard)
+            );
+        down.onTrue(
+            new InstantCommand(() -> States.driveState = States.DriveStates.d270)).onFalse(
+            new InstantCommand(() -> States.driveState = States.DriveStates.standard)
+            );
+
 
   }
 
