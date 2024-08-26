@@ -33,7 +33,7 @@ public class Arm extends SubsystemBase {
   private boolean isClimb = false;
   private boolean isAmp = false;
 
-  public Arm(XboxController controller) {// LEDs leds) {
+  public Arm() {// LEDs leds) {
 
     // this.leds = leds;
 
