@@ -150,17 +150,17 @@ private static Arm arm = new Arm();
   public Command ampButtonBinding() {
     return new SequentialCommandGroup(
         new ParallelCommandGroup(new InstantCommand(() -> shooter.setAmpSpeed())),
-        new InstantCommand(() -> System.out.println("Arm to amp pos...")),
+        new InstantCommand(() -> arm.goToAmpPos()),
         new WaitCommand(1.0),
-        new InstantCommand(() -> System.out.println("Intaking...")));
+        new InstantCommand(() -> intake.intake()));
   }
 
   public Command shootButtonBinding() {
     return new SequentialCommandGroup(
         new ParallelCommandGroup(new InstantCommand(() -> shooter.setSpeakerSpeed())),
-        new InstantCommand(() -> System.out.println("Arm to shoot pos...")),
+        new InstantCommand(() -> arm.goToShootPos()),
         new WaitCommand(1.0),
-        new InstantCommand(() -> System.out.println("Intaking...")));
+        new InstantCommand(() -> intake.intake()));
   }
   ;
 
@@ -182,16 +182,16 @@ private static Arm arm = new Arm();
         .whileTrue(
             new InstantCommand(
                 () -> {
-                  System.out.println("Intaking...");
+                  intake.intake();
                 }))
         .onFalse(new InstantCommand(
-          () -> System.out.println("Intake retracting...")));
+          () -> intake.retract()));
 
     // 'a' button outtakes note
     operatorController
         .rightBumper()
-        .whileTrue(new InstantCommand(() -> System.out.println("Outtaking...")))
-        .onFalse(new InstantCommand(() -> System.out.println("Intake zeroed...")));
+        .whileTrue(new InstantCommand(() -> intake.outtake()))
+        .onFalse(new InstantCommand(() -> intake.zero()));
 
     // driver.y().onTrue(autonomous.SHOOT_MOBILITY());
 
@@ -224,7 +224,7 @@ private static Arm arm = new Arm();
             new InstantCommand(
                 () -> {
                   shooter.zero();
-                  System.out.println("Intake zeroed...");
+                  intake.zero();
                 }));
 
     operatorController
@@ -232,7 +232,7 @@ private static Arm arm = new Arm();
         .whileTrue(
             new InstantCommand(
                 () -> {
-                  System.out.println("Arm to climb down pos...");
+                  arm.goToClimbDownPos();
                 }));
 
     operatorController
@@ -240,8 +240,8 @@ private static Arm arm = new Arm();
         .whileTrue(ampButtonBinding())
         .onFalse(
             new ParallelCommandGroup(
-                new InstantCommand(() -> System.out.println("Arm to shoot pos...")),
-                new InstantCommand(() -> System.out.println("Intake zeroed...")),
+                new InstantCommand(() -> arm.goToShootPos()),
+                new InstantCommand(() -> intake.zero()),
                 new InstantCommand(() -> shooter.zero())));
 
     operatorController
@@ -249,7 +249,7 @@ private static Arm arm = new Arm();
         .whileTrue(
             new InstantCommand(
                 () -> {
-                  System.out.println("Arm to climb up pos...");
+                  arm.goToClimbUpPos();
                 }));
 
     operatorController
@@ -257,8 +257,8 @@ private static Arm arm = new Arm();
         .whileTrue(shootButtonBinding())
         .onFalse(
             new ParallelCommandGroup(
-                new InstantCommand(() -> System.out.println("Arm to shoot pos...")),
-                new InstantCommand(() -> System.out.println("Intake zeroed...")),
+                new InstantCommand(() -> arm.goToShootPos()),
+                new InstantCommand(() -> intake.zero()),
                 new InstantCommand(() -> shooter.zero())));
 
     // drive.setDefaultCommand(
@@ -327,8 +327,8 @@ private static Arm arm = new Arm();
         .onFalse(
             new ParallelCommandGroup(
                 new InstantCommand(() -> arm.goToShootPos()),
-                new InstantCommand(() -> System.out.println("Intaking...")),
-                new InstantCommand(() -> System.out.println("Outtaking..."))));
+                new InstantCommand(() -> intake.intake()),
+                new InstantCommand(() -> intake.outtake())));
 // operator
 //         .b()
 //         .whileTrue(ampButtonBinding())
@@ -351,8 +351,8 @@ private static Arm arm = new Arm();
         .onFalse(
             new ParallelCommandGroup(
                 new InstantCommand(() -> arm.goToShootPos()),
-                new InstantCommand(() -> System.out.println("Intaking...")),
-                new InstantCommand(() -> System.out.println("Outtaking..."))));
+                new InstantCommand(() -> intake.intake()),
+                new InstantCommand(() -> intake.outtake())));
 
   
 
