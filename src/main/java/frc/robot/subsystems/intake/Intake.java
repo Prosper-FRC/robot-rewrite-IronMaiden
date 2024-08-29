@@ -20,6 +20,8 @@ public class Intake extends SubsystemBase {
 
   public Intake() {
     indexerMotor = new CANSparkMax(IntakeConstants.k_indexerID, MotorType.kBrushless);
+
+    configure();
   }
 
   // Set motor speed to intake note

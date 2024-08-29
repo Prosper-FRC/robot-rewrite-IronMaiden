@@ -313,23 +313,7 @@ private static Arm arm = new Arm();
             new InstantCommand(() -> States.driveState = States.DriveStates.d270)).onFalse(
             new InstantCommand(() -> States.driveState = States.DriveStates.standard)
             );
-     operatorController
-        .a()
-        .whileTrue(
-            new InstantCommand(
-                () -> {
-                  arm.goToClimbDownPos();
-                }));
-
-    operatorController
-        .b()
-        .whileTrue(ampButtonBinding())
-        .onFalse(
-            new ParallelCommandGroup(
-                new InstantCommand(() -> arm.goToShootPos()),
-                new InstantCommand(() -> intake.intake()),
-                new InstantCommand(() -> intake.outtake())));
-// operator
+    
 //         .b()
 //         .whileTrue(ampButtonBinding())
 //         .onFalse(
@@ -337,25 +321,7 @@ private static Arm arm = new Arm();
 //                 new InstantCommand(() -> arm.goToShootPos()),
 //                 new InstantCommand(() -> intake.zero()),
 //                 new InstantCommand(() -> shooter.zero())));
-    operatorController
-        .y()
-        .whileTrue(
-            new InstantCommand(
-                () -> {
-                  arm.goToClimbUpPos();
-                }));
-
-    operatorController
-        .x()
-        .whileTrue(shootButtonBinding())
-        .onFalse(
-            new ParallelCommandGroup(
-                new InstantCommand(() -> arm.goToShootPos()),
-                new InstantCommand(() -> intake.intake()),
-                new InstantCommand(() -> intake.outtake())));
-
   
-
   //  driver.rightBumper().onTrue(leds.toggleBlue());
 
     driverController.rightTrigger().onTrue(new InstantCommand(() -> arm.climbOff()));
