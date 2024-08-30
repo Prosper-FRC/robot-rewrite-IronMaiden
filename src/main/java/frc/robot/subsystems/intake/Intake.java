@@ -51,13 +51,15 @@ public class Intake extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Intake Amps", indexerMotor.getOutputCurrent());
+    SmartDashboard.putNumber("Intake temp", indexerMotor.getMotorTemperature());
   }
 
   // motor configurations
   public void configure() {
     indexerMotor.setIdleMode(IdleMode.kBrake);
     indexerMotor.setSmartCurrentLimit(IntakeConstants.k_smartCurrentLimit);
-    // indexerMotor.burnFlash();
+    indexerMotor.setSecondaryCurrentLimit(50);
+    indexerMotor.burnFlash();
     indexerMotor.clearFaults();
   }
 }

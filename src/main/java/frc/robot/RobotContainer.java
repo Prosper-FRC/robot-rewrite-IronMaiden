@@ -162,7 +162,14 @@ private static Arm arm = new Arm();
         new WaitCommand(1.0),
         new InstantCommand(() -> intake.intake()));
   }
-  ;
+  
+
+  public Command testShooterAndIntake() {
+    return new ParallelCommandGroup(
+        new InstantCommand(() -> shooter.setSpeakerSpeed()),
+        new InstantCommand(() -> intake.intake())
+    );
+  }
 
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
@@ -179,13 +186,16 @@ private static Arm arm = new Arm();
     // right bumper intakes note and retracts to move note away from shooter wheels
     operatorController
         .leftBumper()
-        .whileTrue(
+        .whileTrue( 
             new InstantCommand(
                 () -> {
                   intake.intake();
                 }))
-        .onFalse(new InstantCommand(
-          () -> intake.retract()));
+            .onFalse(intake.retract());
+        // .onFalse(new InstantCommand(
+        //   () -> intake.retract()));
+
+
 
     // 'a' button outtakes note
     operatorController
@@ -224,8 +234,32 @@ private static Arm arm = new Arm();
             new InstantCommand(
                 () -> {
                   shooter.zero();
-                  intake.zero();
+                 // intake.zero();
                 }));
+
+    operatorController
+    .povDown()
+    .whileTrue(new InstantCommand(() -> shooter.setSpeakerSpeed()))
+    .onFalse(
+        new InstantCommand(
+            () -> {
+                shooter.zero();
+                //intake.zero();
+            }
+        )
+    );
+
+    operatorController
+    .povLeft()
+    .whileTrue(new InstantCommand(() -> testShooterAndIntake()))
+    .onFalse(
+        new InstantCommand(
+            () -> {
+                shooter.zero();
+                intake.zero();
+            }
+        )
+    );
 
     operatorController
         .a()
@@ -297,22 +331,22 @@ private static Arm arm = new Arm();
         robotCentric.toggleOnTrue(new InstantCommand(() -> centric = !centric));
 
         //heading lock bindings
-        up.onTrue(
-            new InstantCommand(() -> States.driveState = States.DriveStates.d90)).onFalse(
-            new InstantCommand(() -> States.driveState = States.DriveStates.standard)
-            );
-        left.onTrue(
-            new InstantCommand(() -> States.driveState = States.DriveStates.d180)).onFalse(
-            new InstantCommand(() -> States.driveState = States.DriveStates.standard)
-            );
-        right.onTrue(
-            new InstantCommand(() -> States.driveState = States.DriveStates.d0)).onFalse(
-            new InstantCommand(() -> States.driveState = States.DriveStates.standard)
-            );
-        down.onTrue(
-            new InstantCommand(() -> States.driveState = States.DriveStates.d270)).onFalse(
-            new InstantCommand(() -> States.driveState = States.DriveStates.standard)
-            );
+        // up.onTrue(
+        //     new InstantCommand(() -> States.driveState = States.DriveStates.d90)).onFalse(
+        //     new InstantCommand(() -> States.driveState = States.DriveStates.standard)
+        //     );
+        // left.onTrue(
+        //     new InstantCommand(() -> States.driveState = States.DriveStates.d180)).onFalse(
+        //     new InstantCommand(() -> States.driveState = States.DriveStates.standard)
+        //     );
+        // right.onTrue(
+        //     new InstantCommand(() -> States.driveState = States.DriveStates.d0)).onFalse(
+        //     new InstantCommand(() -> States.driveState = States.DriveStates.standard)
+        //     );
+        // down.onTrue(
+        //     new InstantCommand(() -> States.driveState = States.DriveStates.d270)).onFalse(
+        //     new InstantCommand(() -> States.driveState = States.DriveStates.standard)
+        //     );
     
 //         .b()
 //         .whileTrue(ampButtonBinding())

@@ -7,6 +7,8 @@ package frc.robot.subsystems.shooter;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -28,6 +30,9 @@ public class Shooter extends SubsystemBase {
 
     leftShootMotor.setInverted(ShooterConstants.k_isInverted);
     rightShootMotor.setInverted(ShooterConstants.k_isInverted);
+
+    configure(leftShootMotor);
+    configure(rightShootMotor);
   }
 
   // Set motor speeds to the speed needed to score Speaker
@@ -78,13 +83,19 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Left shooter current", leftShootMotor.getOutputCurrent());
+    SmartDashboard.putNumber("Left shooter temp", leftShootMotor.getMotorTemperature());
+
+    SmartDashboard.putNumber("Right shooter current", rightShootMotor.getOutputCurrent());
+    SmartDashboard.putNumber("Right shooter temp", rightShootMotor.getMotorTemperature());
   }
 
   // Configure motors
   public void configure(CANSparkMax motor) {
-    motor.setIdleMode(IdleMode.kBrake);
+    motor.setIdleMode(IdleMode.kCoast);
     motor.setSmartCurrentLimit(ShooterConstants.k_smartCurrentLimit);
-    // motor.burnFlash();
+    motor.setSecondaryCurrentLimit(50);
+    motor.burnFlash();
     motor.clearFaults();
   }
 }
