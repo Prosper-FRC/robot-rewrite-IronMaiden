@@ -18,6 +18,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -28,6 +30,9 @@ public class Swerve extends SubsystemBase {
     public SwerveModule[] mSwerveMods;
     public Pigeon2 gyro;
 
+    // WPILib
+    StructArrayPublisher<SwerveModuleState> publisher = NetworkTableInstance.getDefault()
+    .getStructArrayTopic("MyStates", SwerveModuleState.struct).publish();
 
 
     public Swerve() {
@@ -117,6 +122,8 @@ public class Swerve extends SubsystemBase {
         return states;
     }
 
+    // Logger.recordOutput("MyStates", states);
+
     public SwerveModulePosition[] getModulePositions() {
         SwerveModulePosition[] positions = new SwerveModulePosition[4];
         for(SwerveModule mod : mSwerveMods) {
@@ -156,8 +163,12 @@ public class Swerve extends SubsystemBase {
 
          //  SmartDashboard.putNumber("Position error: ", )
 
+         publisher.set(getModuleStates());
+
         }
 
         SmartDashboard.putBoolean("Robot centric", RobotContainer.centric);
     }
+
+    
 }
