@@ -10,6 +10,8 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 
 import java.text.BreakIterator;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.ctre.phoenix6.hardware.Pigeon2;
 
@@ -54,6 +56,8 @@ public class Swerve extends SubsystemBase {
 
         swerveOdometry = new SwerveDriveOdometry(SwerveConfig.swerveKinematics, getYaw(), getModulePositions());
         zeroGyro();
+
+        Logger.recordOutput("MyStates", getModuleStates());
 
     }
     private static ChassisSpeeds correctForDynamics(ChassisSpeeds originalSpeeds) {
@@ -122,7 +126,7 @@ public class Swerve extends SubsystemBase {
         return states;
     }
 
-    // Logger.recordOutput("MyStates", states);
+
 
     public SwerveModulePosition[] getModulePositions() {
         SwerveModulePosition[] positions = new SwerveModulePosition[4];
@@ -169,6 +173,9 @@ public class Swerve extends SubsystemBase {
 
         SmartDashboard.putBoolean("Robot centric", RobotContainer.centric);
     }
+
+  
+
 
     
 }
