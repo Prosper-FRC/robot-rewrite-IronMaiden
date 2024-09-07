@@ -161,6 +161,7 @@ private static Arm arm = new Arm();
         new InstantCommand(() -> arm.goToShootPos()),
         new WaitCommand(1.0),
         new InstantCommand(() -> intake.intake()));
+        
   }
   
 
