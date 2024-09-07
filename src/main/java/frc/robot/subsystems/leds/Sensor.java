@@ -10,23 +10,25 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Sensor extends SubsystemBase {
   /** Creates a new Sensor. */
-  public static boolean noteDetected = false;
+  // public static boolean noteDetected = false;
 
   private static DigitalInput sensor;
-  private LEDs led;
+  private static LEDs led;
  // private static Intake intake;
 
   public Sensor() {
     sensor = new DigitalInput(0);
   }
 
-  public static boolean isDetected() {
+  public boolean isDetected() {
+   // System.out.println("Note detected");
     return !sensor.get();
   }
 
-  public static void getNoteDetected() {
-    if (noteDetected) {
-      System.out.println("Note detected ");
+  public void getNoteDetected() {
+    if (isDetected()) {
+      led.setLEDsPurple();
+      System.out.println("Note detected");
     }
   }
 
@@ -38,10 +40,14 @@ public class Sensor extends SubsystemBase {
 
   @Override
   public void periodic() {
-    noteDetected = isDetected();
+    // noteDetected = isDetected();
+    // getNoteDetected();
+    // if (noteDetected) {
+    //   led.blinkCommand().withTimeout(2);
+    // }
+
+    isDetected();
     getNoteDetected();
-    if (noteDetected) {
-      led.blinkCommand().withTimeout(2);
-    }
+
   }
 }
