@@ -13,9 +13,15 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -61,6 +67,8 @@ import frc.robot.subsystems.arm.Arm;
 public class RobotContainer {
 
     /* Controllers */
+    private final SendableChooser<Command> autoChooser;
+
     private final Joystick driver = new Joystick(0);
     public static boolean centric = false;
 
@@ -101,6 +109,10 @@ public class RobotContainer {
   private static Intake intake;
 private static Arm arm = new Arm();
 
+  public Command getAutonomousCommand() {
+    return new PathPlannerAuto("Straight");
+  }
+
 
   // Dashboard inputs
 
@@ -123,8 +135,12 @@ private static Arm arm = new Arm();
         intake = new Intake();
         shooter = new Shooter();
 
+        autoChooser = AutoBuilder.buildAutoChooser();
+
+     //   NamedCommands.registerCommand("straightPath", getAutonomousCommand());
 
 
+        SmartDashboard.putData("Auto Chooser", autoChooser);
 
 
         // Configure the button bindings

@@ -40,6 +40,8 @@ public class SwerveConfig
     public static final double wheelCircumference = chosenModule.wheelCircumference;
 
 
+    public static final double maxModuleSpeed = 4.5; // M/S
+    
     /* Swerve Kinematics 
      * No need to ever change this unless you are not doing a traditional rectangular/square 4 module swerve */
      public static final SwerveDriveKinematics swerveKinematics = new SwerveDriveKinematics(

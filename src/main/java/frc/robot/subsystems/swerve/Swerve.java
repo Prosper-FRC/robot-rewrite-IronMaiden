@@ -15,6 +15,9 @@ import org.littletonrobotics.junction.Logger;
 import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -61,8 +64,58 @@ public class Swerve extends SubsystemBase {
 
         Logger.recordOutput("MyStates", getModuleStates());
 
+            // Configure AutoBuilder last
+    AutoBuilder.configureHolonomic(
+        this::getPose, // Robot pose supplier
+        this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
+        this::getSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+        this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+        new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
+                new PIDConstants(1.0, 0.0, 0.0), // Translation PID constants
+                new PIDConstants(0.0, 0.0, 0.0), // Rotation PID constants
+                SwerveConfig.maxSpeed, // Max module speed, in m/s
+                SwerveConfig.driveBaseRadius, // Drive base radius in meters. Distance from robot center to furthest module.
+                new ReplanningConfig() // Default path replanning config. See the API for the options here
+        ),
+        () -> {
+          // Boolean supplier that controls when the path will be mirrored for the red alliance
+          // This will flip the path being followed to the red side of the field.
+          // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
+          var alliance = DriverStation.getAlliance();
+          if (alliance.isPresent()) {
+            return alliance.get() == DriverStation.Alliance.Red;
+          }
+          return false;
+        },
+        this // Reference to this subsystem to set requirements
+);
+}
+
+
+  public void resetPose(Pose2d pose) {
+    swerveOdometry.resetPosition(gyro.getRotation2d(), getModulePositions(), pose);
+  }
+
+  public void driveRobotRelative(ChassisSpeeds robotRelativeSpeeds) {
+    ChassisSpeeds targetSpeeds = ChassisSpeeds.discretize(robotRelativeSpeeds, 0.02);
+
+    SwerveModuleState[] targetStates = SwerveConfig.swerveKinematics.toSwerveModuleStates(targetSpeeds);
+    setStates(targetStates);
+  }
+
+  public void setStates(SwerveModuleState[] targetStates) {
+    SwerveDriveKinematics.desaturateWheelSpeeds(targetStates, SwerveConfig.maxSpeed);
+
+    for (int i = 0; i < mSwerveMods.length; i++) {
+      //mSwerveMods[i].setTargetState(targetStates[i]);
+      mSwerveMods[i].setDesiredState(targetStates[i], false);
     }
+  }
+
+  public ChassisSpeeds getSpeeds() {
+    return SwerveConfig.swerveKinematics.toChassisSpeeds(getModuleStates());
+  }
     private static ChassisSpeeds correctForDynamics(ChassisSpeeds originalSpeeds) {
         final double LOOP_TIME_S = 0.02;
         Pose2d futureRobotPose =
