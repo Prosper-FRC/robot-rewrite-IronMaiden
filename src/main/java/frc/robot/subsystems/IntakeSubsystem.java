@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems.IntakeSubsystem;
+package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -18,32 +18,32 @@ public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new Intake. */
   private CANSparkMax indexerMotor;
 
-  public Intake() {
+  public IntakeSubsystem() {
     indexerMotor = new CANSparkMax(15, MotorType.kBrushless);
   }
 
   // Set motor speed to intake note
   public void intake() {
-    indexerMotor.set(IntakeConstants.k_indexerSpeed);
+    indexerMotor.set(0.75);
   }
 
   // Set motor speed to outtake note
   public void outtake() {
-    indexerMotor.set(-IntakeConstants.k_indexerSpeed);
+    indexerMotor.set(-0.5);
   }
 
   // Set motor speed to zero
   public void zero() {
-    indexerMotor.set(IntakeConstants.k_indexerZero);
+    indexerMotor.set(0.0);
   }
 
   // Command to pull back note away from shooter wheels when intake button is released
-  public Command retract() {
-    return new SequentialCommandGroup(
-        new InstantCommand(() -> outtake()),
-        new WaitCommand(IntakeConstants.k_waitTime),
-        new InstantCommand(() -> zero()));
-  }
+//   public Command retract() {
+//     return new SequentialCommandGroup(
+//         new InstantCommand(() -> outtake()),
+//         new WaitCommand(IntakeConstants.k_waitTime),
+//         new InstantCommand(() -> zero()));
+//   }
 
   @Override
   public void periodic() {
@@ -54,7 +54,7 @@ public class IntakeSubsystem extends SubsystemBase {
   // motor configurations
   public void configure() {
     indexerMotor.setIdleMode(IdleMode.kBrake);
-    indexerMotor.setSmartCurrentLimit(IntakeConstants.k_smartCurrentLimit);
+    indexerMotor.setSmartCurrentLimit(40);
     // indexerMotor.burnFlash();
     indexerMotor.clearFaults();
   }
