@@ -12,12 +12,13 @@ public class Sensor extends SubsystemBase {
   /** Creates a new Sensor. */
   // public static boolean noteDetected = false;
 
-  private static DigitalInput sensor;
+  private static DigitalInput sensor = null;
   private static LEDs led;
  // private static Intake intake;
 
-  public Sensor() {
+  public Sensor(LEDs ledIn) {
     sensor = new DigitalInput(0);
+    led = ledIn;
   }
 
   public boolean isDetected() {
@@ -29,6 +30,9 @@ public class Sensor extends SubsystemBase {
     if (isDetected()) {
       led.setLEDsPurple();
       System.out.println("Note detected");
+    }
+    else {
+      led.ladyChaser();
     }
   }
 
@@ -46,7 +50,7 @@ public class Sensor extends SubsystemBase {
     //   led.blinkCommand().withTimeout(2);
     // }
 
-    isDetected();
+    //isDetected();
     getNoteDetected();
 
   }
