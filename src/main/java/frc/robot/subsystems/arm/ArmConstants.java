@@ -19,7 +19,7 @@ public class ArmConstants {
           * (28.0 / 50.0)
           * (16.0 / 64.0); // was 1/25, but another maxplanetary was added to make it 1/125.
   public static final double k_positionConversionFactor = k_armGearRatio;
-  public static final double k_velocityConversionFactor = k_armGearRatio / 60.0;
+  public static final double k_velocityConversionFactor = k_armGearRatio / 60.0; // dividing by 60 for 60 seconds in a minute - V = displacement/time
 
   public static final double k_armP = 25.0; // 2.5 on REV ION
   public static final double k_armI = 0.0;
@@ -51,4 +51,6 @@ public class ArmConstants {
   public static final double k_upperBound = 0.23; // 0.194179
   public static final double k_upperBoundNormal = 0.966363;
   public static final double k_lowerBound = 0.0; // + k_armEncoderOffset.getRotations();
+
+  public static final double k_maxBatteryVoltage = 12;
 }

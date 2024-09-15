@@ -2,6 +2,11 @@ package frc.lib.util.swerveUtil;
 
 import edu.wpi.first.math.util.Units;
 
+/* 
+ From PracticalNeoSwerve:
+https://github.com/TeamFusion364/PracticalFalconSwerve/blob/main/src/main/java/frc/lib/util/COTSFalconSwerveConstants.java 
+*/
+
 /* Contains values and required settings for common COTS swerve modules. */
 public class COTSFalconSwerveConstants {
     public final double wheelDiameter;

@@ -41,15 +41,7 @@ public class LogManager {
 
   
 
-  /**
-   * @deprecated Use {@link #addDouble(String, double)} with a single value instead.
-   */
-  @Deprecated
-  public static void addDouble(String name, DoubleSupplier logged) {
-    DoubleLogEntry myDoubleLog = new DoubleLogEntry(log, name);
-    doubleLogs.add(myDoubleLog);
-    doubleValues.add(logged);
-  }
+  
 
   /**
    * Logs a single double value to the log. Do not use with the other addDouble() that takes a double supplier.
@@ -68,15 +60,7 @@ public class LogManager {
     }
   }
 
-  /**
-   * @deprecated Use {@link #addDoubleArray(String, double[])} with a single value instead.
-   */
-  @Deprecated
-  public static void addDoubleArray(String name, DoubleSupplier[] logged) {
-    DoubleArrayLogEntry myDoubleLog = new DoubleArrayLogEntry(log, name);
-    doubleArrayLogs.add(myDoubleLog);
-    doubleArrayValues.add(logged);
-  }
+  
 
   /**
    * Logs a single double array to the log. Do not use with the other addDoubleArray() that takes a double array supplier.
@@ -122,15 +106,6 @@ public class LogManager {
     }
   }
 
-  /**
-   * @deprecated Use {@link #addBoolean(String, boolean)} with a single value instead.
-   */
-  @Deprecated
-  public static void addBoolean(String name, BooleanSupplier logged) {
-    BooleanLogEntry BooleanLog = new BooleanLogEntry(log, name);
-    booleanLogs.add(BooleanLog);
-    booleanValues.add(logged);
-  }
 
   /**
    * Logs a single boolean to the log. Do not use with the other addBoolean() that takes a boolean supplier.

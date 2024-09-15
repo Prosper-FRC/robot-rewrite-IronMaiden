@@ -64,21 +64,7 @@ public class Shooter extends SubsystemBase {
     rightShootMotor.set(ShooterConstants.k_shootZero);
   }
 
-  // Command to rev up shooter and run intake to shoot speaker
-  public Command shootSpeaker() {
-    return new SequentialCommandGroup(
-        new InstantCommand(() -> setSpeakerSpeed()),
-        new WaitCommand(ShooterConstants.k_waitTime),
-        new InstantCommand(() -> System.out.println("Intaking...")));
-  }
-
-  // Command to rev up shooter and run intake to shoot amp
-  public Command shootAmp() {
-    return new SequentialCommandGroup(
-        new InstantCommand(() -> setAmpSpeed()),
-        new WaitCommand(ShooterConstants.k_waitTime),
-        new InstantCommand(() -> System.out.println("Intaking...")));
-  }
+ 
 
   @Override
   public void periodic() {

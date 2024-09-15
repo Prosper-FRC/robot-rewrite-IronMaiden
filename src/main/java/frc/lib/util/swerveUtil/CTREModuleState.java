@@ -2,6 +2,10 @@ package frc.lib.util.swerveUtil;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+/*
+PracticalNeoSwerve:
+https://github.com/TeamFusion364/PracticalFalconSwerve/blob/main/src/main/java/frc/lib/util/CTREModuleState.java
+ */
 
 public class CTREModuleState {
 

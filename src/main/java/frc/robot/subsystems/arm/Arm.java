@@ -80,9 +80,8 @@ public class Arm extends SubsystemBase {
     // armController.setGoal(ArmConstants.k_shootSetpoint);
     System.out.println("Going to climb down pos");
   }
-  // Moves arm to amp position to shoot note
-  double pidVal;
 
+  // Moves arm to amp position to shoot note
   public void goToAmpPos() {
     armController.setConstraints(
         new TrapezoidProfile.Constraints(
@@ -149,7 +148,7 @@ public class Arm extends SubsystemBase {
   public double setFeedforward() {
     return feedForward.calculate(
             getPosition().getRadians() + ArmConstants.k_armEncoderOffset.getRadians(), 0.0)
-        / 12.0;
+        / ArmConstants.k_maxBatteryVoltage;
   }
 
   // Checks if the arm is within its upper and lower bounds

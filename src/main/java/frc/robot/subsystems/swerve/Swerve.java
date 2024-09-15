@@ -34,7 +34,7 @@ public class Swerve extends SubsystemBase {
 
 
     public SwerveDriveOdometry swerveOdometry;
-    public SwerveModule[] mSwerveMods;
+    public ISwerveModule[] mSwerveMods;
     public Pigeon2 gyro;
 
     // WPILib
@@ -44,14 +44,14 @@ public class Swerve extends SubsystemBase {
 
     public Swerve() {
         
-        gyro = new Pigeon2(SwerveConstants.REV.pigeonID);
+       gyro = new Pigeon2(SwerveConstants.REV.pigeonID);
        // gyro.configFactoryDefault();
-        Pigeon2Configuration PigeonConfig = new Pigeon2Configuration();
+       Pigeon2Configuration PigeonConfig = new Pigeon2Configuration();
        gyro.getConfigurator().apply(PigeonConfig);
         
      
 
-        mSwerveMods = new SwerveModule[] {
+        mSwerveMods = new ISwerveModule[] {
            
             new SwerveMod(0, SwerveConstants.Swerve.Mod0.constants),
             new SwerveMod(1, SwerveConstants.Swerve.Mod1.constants),
@@ -62,7 +62,7 @@ public class Swerve extends SubsystemBase {
         swerveOdometry = new SwerveDriveOdometry(SwerveConfig.swerveKinematics, getYaw(), getModulePositions());
         zeroGyro();
 
-        Logger.recordOutput("MyStates", getModuleStates());
+        Logger.recordOutput("ModuleStates", getModuleStates());
 
             // Configure AutoBuilder last
     AutoBuilder.configureHolonomic(
@@ -149,7 +149,7 @@ public class Swerve extends SubsystemBase {
         SwerveModuleState[] swerveModuleStates = SwerveConfig.swerveKinematics.toSwerveModuleStates(desiredChassisSpeeds);
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, SwerveConfig.maxSpeed);
         
-        for(SwerveModule mod : mSwerveMods){
+        for(ISwerveModule mod : mSwerveMods){
             mod.setDesiredState(swerveModuleStates[mod.getModuleNumber()], isOpenLoop);
         }
 
@@ -160,7 +160,7 @@ public class Swerve extends SubsystemBase {
        // System.out.println("setting module states: "+desiredStates[0]);
         SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, SwerveConfig.maxSpeed);
         
-        for(SwerveModule mod : mSwerveMods){
+        for(ISwerveModule mod : mSwerveMods){
             mod.setDesiredState(desiredStates[mod.getModuleNumber()], false);
         }
     }    
@@ -176,7 +176,7 @@ public class Swerve extends SubsystemBase {
     }
     public SwerveModuleState[] getModuleStates() {
         SwerveModuleState[] states = new SwerveModuleState[4];
-        for(SwerveModule mod : mSwerveMods) {
+        for(ISwerveModule mod : mSwerveMods) {
             states[mod.getModuleNumber()] = mod.getState();
         }
         return states;
@@ -186,17 +186,17 @@ public class Swerve extends SubsystemBase {
 
     public SwerveModulePosition[] getModulePositions() {
         SwerveModulePosition[] positions = new SwerveModulePosition[4];
-        for(SwerveModule mod : mSwerveMods) {
+        for(ISwerveModule mod : mSwerveMods) {
             positions[mod.getModuleNumber()] = mod.getPosition();
         }
         return positions;
     }
 
-    public void zeroGyro(double deg) {
+    public void zeroGyro(double degreeToSet) {
         if(SwerveConfig.invertGyro) {
-            deg = -deg;
+            degreeToSet = -degreeToSet;
         }
-        gyro.setYaw(deg);
+        gyro.setYaw(degreeToSet);
         swerveOdometry.update(getYaw(), getModulePositions());  
     }
 
@@ -211,7 +211,7 @@ public class Swerve extends SubsystemBase {
     @Override
     public void periodic() {
         SmartDashboard.putNumber("yaw", gyro.getYaw().getValueAsDouble());
-        for(SwerveModule mod : mSwerveMods) {
+        for(ISwerveModule mod : mSwerveMods) {
             // SmartDashboard.putNumber("REV Mod " + mod.getModuleNumber() + " Cancoder", mod.getCanCoder().getDegrees());
             // SmartDashboard.putNumber("REV Mod " + mod.getModuleNumber() + " Integrated", mod.getPosition().angle.getDegrees());
             // SmartDashboard.putNumber("REV Mod " + mod.getModuleNumber() + " Velocity", mod.getState().speedMetersPerSecond);    

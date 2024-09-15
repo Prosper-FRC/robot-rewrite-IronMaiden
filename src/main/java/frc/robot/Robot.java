@@ -38,7 +38,7 @@ public class Robot extends LoggedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
 
-    Logger.recordMetadata("ProjectName", "MyProject"); // Set a metadata value
+    Logger.recordMetadata("ProjectName", Constants.projectName); // Set a metadata value
 
 if (isReal()) {
     Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
@@ -85,7 +85,7 @@ Logger.start(); // Start logging! No more data receivers, replay sources, or met
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    // m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {

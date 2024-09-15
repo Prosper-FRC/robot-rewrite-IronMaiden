@@ -43,7 +43,7 @@ public class Intake extends SubsystemBase {
   public Command retract() {
     return new SequentialCommandGroup(
         new InstantCommand(() -> outtake()),
-        new WaitCommand(IntakeConstants.k_waitTime),
+        new WaitCommand(IntakeConstants.k_waitTimeRetract),
         new InstantCommand(() -> zero()));
   }
 
@@ -58,7 +58,7 @@ public class Intake extends SubsystemBase {
   public void configure() {
     indexerMotor.setIdleMode(IdleMode.kBrake);
     indexerMotor.setSmartCurrentLimit(IntakeConstants.k_smartCurrentLimit);
-    indexerMotor.setSecondaryCurrentLimit(50);
+    indexerMotor.setSecondaryCurrentLimit(IntakeConstants.k_secondaryCurrentLimit);
     indexerMotor.burnFlash();
     indexerMotor.clearFaults();
   }

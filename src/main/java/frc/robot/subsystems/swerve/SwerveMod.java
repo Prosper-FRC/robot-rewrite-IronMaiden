@@ -6,7 +6,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.lib.util.swerveUtil.CTREModuleState;
-import frc.lib.util.swerveUtil.RevSwerveModuleConstants;
+import frc.lib.util.swerveUtil.SwerveModuleConstants;
 
 // import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix6.hardware.CANcoder;
@@ -20,7 +20,7 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 /**
  * a Swerve Modules using REV Robotics motor controllers and CTRE CANcoder absolute encoders.
  */
-public class SwerveMod implements SwerveModule
+public class SwerveMod implements ISwerveModule
 {
     public int moduleNumber;
     private Rotation2d angleOffset;
@@ -33,7 +33,7 @@ public class SwerveMod implements SwerveModule
     private RelativeEncoder relDriveEncoder;
 
 
-    public SwerveMod(int moduleNumber, RevSwerveModuleConstants moduleConstants)
+    public SwerveMod(int moduleNumber, SwerveModuleConstants moduleConstants)
     {
         this.moduleNumber = moduleNumber;
         this.angleOffset = moduleConstants.angleOffset;

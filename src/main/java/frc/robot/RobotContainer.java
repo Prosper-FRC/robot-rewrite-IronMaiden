@@ -57,7 +57,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.commands.*;
-import frc.robot.subsystems.PoseEstimator;
+// import frc.robot.subsystems.PoseEstimator;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.arm.Arm;
 
@@ -72,7 +72,7 @@ public class RobotContainer {
     /* Controllers */
     private final SendableChooser<Command> autoChooser;
 
-    private final Joystick driver = new Joystick(0);
+    private final Joystick driver = new Joystick(Constants.kDriverControllerPort);
     public static boolean centric = false;
 
    /* Driver Controls */
@@ -97,8 +97,8 @@ public class RobotContainer {
 
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
-    private final PoseEstimator s_PoseEstimator = new PoseEstimator();
-    private static Shooter shooter;
+   // private final PoseEstimator s_PoseEstimator = new PoseEstimator();
+
 
 
   // Subsystems
@@ -109,8 +109,9 @@ public class RobotContainer {
   private static final CommandXboxController operatorController =
       new CommandXboxController(Constants.kOperatorControllerPort);
 
+  private static Shooter shooter;
   private static Intake intake;
-private static Arm arm = new Arm();
+  private static Arm arm;
 
   public Command getAutonomousCommand() {
 
@@ -138,8 +139,9 @@ private static Arm arm = new Arm();
             )
         );
 
-        intake = new Intake();
         shooter = new Shooter();
+        intake = new Intake();
+        arm = new Arm();
 
         autoChooser = AutoBuilder.buildAutoChooser();
 
@@ -171,7 +173,7 @@ private static Arm arm = new Arm();
 
   public Command ampButtonBinding() {
     return new SequentialCommandGroup(
-        new ParallelCommandGroup(new InstantCommand(() -> shooter.setAmpSpeed())),
+        new InstantCommand(() -> shooter.setAmpSpeed()),
         new InstantCommand(() -> arm.goToAmpPos()),
         new WaitCommand(1.0),
         new InstantCommand(() -> intake.intake()));
@@ -179,7 +181,7 @@ private static Arm arm = new Arm();
 
   public Command shootButtonBinding() {
     return new SequentialCommandGroup(
-        new ParallelCommandGroup(new InstantCommand(() -> shooter.setSpeakerSpeed())),
+        new InstantCommand(() -> shooter.setSpeakerSpeed()),
         new InstantCommand(() -> arm.goToShootPos()),
         new WaitCommand(1.0),
         new InstantCommand(() -> intake.intake()));
