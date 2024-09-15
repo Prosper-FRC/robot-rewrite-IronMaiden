@@ -1,9 +1,11 @@
 
 package frc.robot.subsystems.swerve;
 
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.DriverStation;
 import frc.lib.util.swerveUtil.CTREModuleState;
 import frc.lib.util.swerveUtil.SwerveModuleConstants;
@@ -88,6 +90,7 @@ public class SwerveMod implements ISwerveModule
     {
         mAngleMotor.restoreFactoryDefaults();
         SparkPIDController controller = mAngleMotor.getPIDController();
+            //new TrapezoidProfile.Constraints(3, 3));
         controller.setP(SwerveConfig.angleKP, 0);
         controller.setI(SwerveConfig.angleKI,0);
         controller.setD(SwerveConfig.angleKD,0);
@@ -105,12 +108,14 @@ public class SwerveMod implements ISwerveModule
     private void configDriveMotor()
     {        
         mDriveMotor.restoreFactoryDefaults();
-        SparkPIDController controller = mDriveMotor.getPIDController();
-        controller.setP(SwerveConfig.driveKP,0);
-        controller.setI(SwerveConfig.driveKI,0);
-        controller.setD(SwerveConfig.driveKD,0);
-        controller.setFF(SwerveConfig.driveKF,0);
-        controller.setOutputRange(-SwerveConfig.drivePower, SwerveConfig.drivePower);
+        ProfiledPIDController controller = new ProfiledPIDController(0.0, SwerveConfig.driveKI, SwerveConfig.driveKD, 
+        new TrapezoidProfile.Constraints(1, 1));
+        // controller.setP(SwerveConfig.driveKP,0);
+        // controller.setI(SwerveConfig.driveKI,0);
+        // controller.setD(SwerveConfig.driveKD,0);
+
+        // controller.setFF(SwerveConfig.driveKF,0);
+        // controller.setOutputRange(-SwerveConfig.drivePower, SwerveConfig.drivePower);
         mDriveMotor.setSmartCurrentLimit(SwerveConfig.driveContinuousCurrentLimit);
         mDriveMotor.setInverted(SwerveConfig.driveMotorInvert);
         mDriveMotor.setIdleMode(SwerveConfig.driveIdleMode); 

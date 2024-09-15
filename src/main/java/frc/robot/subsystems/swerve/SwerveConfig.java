@@ -71,12 +71,12 @@ public class SwerveConfig
     public static final boolean canCoderInvert = chosenModule.canCoderInvert;
 
     /* Swerve Current Limiting */
-    public static final int angleContinuousCurrentLimit = 50;
+    public static final int angleContinuousCurrentLimit = 40;
     public static final int anglePeakCurrentLimit = 40; // Not in use
     public static final double anglePeakCurrentDuration = 0.1; // Not in use
     public static final boolean angleEnableCurrentLimit = true; // Not in use
 
-    public static final int driveContinuousCurrentLimit = 50; 
+    public static final int driveContinuousCurrentLimit = 40; 
     public static final int drivePeakCurrentLimit = 60; // Not in use
     public static final double drivePeakCurrentDuration = 0.1; // Not in use
     public static final boolean driveEnableCurrentLimit = true; // Not in use
