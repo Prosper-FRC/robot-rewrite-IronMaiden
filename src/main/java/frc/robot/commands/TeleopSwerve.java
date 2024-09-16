@@ -21,8 +21,8 @@ public class TeleopSwerve extends Command {
     private DoubleSupplier strafeSup;
     private DoubleSupplier rotationSup;
     private BooleanSupplier robotCentricSup;
-    private boolean dampen;
-    private double speedDial;
+    private BooleanSupplier dampenSupl;
+    private DoubleSupplier speedDialSupl;
 
     private PIDController rotationController;
 
@@ -38,8 +38,8 @@ public class TeleopSwerve extends Command {
         this.strafeSup = strafeSup;
         this.rotationSup = rotationSup;
         this.robotCentricSup = robotCentricSup;
-        this.dampen = dampen.getAsBoolean();
-        this.speedDial = speedDial.getAsDouble();
+        dampenSupl = dampen;
+        speedDialSupl = speedDial;
 
         
     }
@@ -47,10 +47,19 @@ public class TeleopSwerve extends Command {
     @Override
     public void execute() {
         /* Get Values, Deadband*/
-        double translationVal = MathUtil.applyDeadband(translationSup.getAsDouble(), Constants.stickDeadband) * (dampen ? 0.2 : 1) * ((speedDial + 1) / 2);
-        double strafeVal = MathUtil.applyDeadband(strafeSup.getAsDouble(), Constants.stickDeadband) * (dampen ? 0.2 : 1) * ((speedDial + 1) / 2);
-        double  rotationVal = MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.stickDeadband) * (dampen ? 0.2 : 1) * ((speedDial + 1) / 2);
 
+        // double translationVal = MathUtil.applyDeadband(translationSup.getAsDouble(), Constants.stickDeadband) * (dampen.getAsBoolean() ? 0.2 : 1) * ((speedDial.getAsDouble() + 1) / 2);
+        // double strafeVal = MathUtil.applyDeadband(strafeSup.getAsDouble(), Constants.stickDeadband) * (dampen.getAsBoolean() ? 0.2 : 1) * ((speedDial.getAsDouble() + 1) / 2);
+        // double  rotationVal = MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.stickDeadband) * (dampen.getAsBoolean() ? 0.2 : 1) * ((speedDial.getAsDouble() + 1) / 2);
+
+        double dampenFactor = dampenSupl.getAsBoolean() ? 0.2 : 1;
+        double speedDialFactor = ((speedDialSupl.getAsDouble() + 1) / 2);
+        double speedScale = dampenFactor * speedDialFactor;
+
+        double translationVal = MathUtil.applyDeadband(translationSup.getAsDouble(), Constants.stickDeadband) * speedScale;
+        double strafeVal = MathUtil.applyDeadband(strafeSup.getAsDouble(), Constants.stickDeadband) * speedScale;
+        double rotationVal = MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.stickDeadband) * speedScale;
+       
         //heading direction state
         switch(States.driveState){
             case d0:
