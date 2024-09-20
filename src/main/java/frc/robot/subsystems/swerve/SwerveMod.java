@@ -81,8 +81,8 @@ public class SwerveMod implements ISwerveModule
     
 
         resetToAbsolute();
-        mDriveMotor.burnFlash();
-        mAngleMotor.burnFlash();
+        // mDriveMotor.burnFlash();
+        // mAngleMotor.burnFlash();
         
     }
 
@@ -97,32 +97,33 @@ public class SwerveMod implements ISwerveModule
         controller.setFF(SwerveConfig.angleKF,0);
         controller.setOutputRange(-SwerveConfig.anglePower, SwerveConfig.anglePower);
         mAngleMotor.setSmartCurrentLimit(SwerveConfig.angleContinuousCurrentLimit);
+        mAngleMotor.setSecondaryCurrentLimit(60);
        
         mAngleMotor.setInverted(SwerveConfig.angleMotorInvert);
         mAngleMotor.setIdleMode(SwerveConfig.angleIdleMode);
 
-        
+        mAngleMotor.burnFlash();
        
     }
 
     private void configDriveMotor()
     {        
         mDriveMotor.restoreFactoryDefaults();
-        ProfiledPIDController controller = new ProfiledPIDController(0.0, SwerveConfig.driveKI, SwerveConfig.driveKD, 
-        new TrapezoidProfile.Constraints(1, 1));
-        // controller.setP(SwerveConfig.driveKP,0);
-        // controller.setI(SwerveConfig.driveKI,0);
-        // controller.setD(SwerveConfig.driveKD,0);
+        // ProfiledPIDController controller = new ProfiledPIDController(0.0, SwerveConfig.driveKI, SwerveConfig.driveKD, 
+        // new TrapezoidProfile.Constraints(1, 1));
+        SparkPIDController controller = mDriveMotor.getPIDController();
+        controller.setP(SwerveConfig.driveKP,0);
+        controller.setI(SwerveConfig.driveKI,0);
+        controller.setD(SwerveConfig.driveKD,0);
 
-        // controller.setFF(SwerveConfig.driveKF,0);
-        // controller.setOutputRange(-SwerveConfig.drivePower, SwerveConfig.drivePower);
+        controller.setFF(SwerveConfig.driveKF,0);
+        controller.setOutputRange(-SwerveConfig.drivePower, SwerveConfig.drivePower);
         mDriveMotor.setSmartCurrentLimit(SwerveConfig.driveContinuousCurrentLimit);
+        mDriveMotor.setSecondaryCurrentLimit(60);
         mDriveMotor.setInverted(SwerveConfig.driveMotorInvert);
         mDriveMotor.setIdleMode(SwerveConfig.driveIdleMode); 
-    
-       
-       
-       
+
+        mDriveMotor.burnFlash();
     }
 
 

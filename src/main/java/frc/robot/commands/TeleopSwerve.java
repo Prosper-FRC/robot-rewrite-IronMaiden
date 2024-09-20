@@ -52,13 +52,17 @@ public class TeleopSwerve extends Command {
         // double strafeVal = MathUtil.applyDeadband(strafeSup.getAsDouble(), Constants.stickDeadband) * (dampen.getAsBoolean() ? 0.2 : 1) * ((speedDial.getAsDouble() + 1) / 2);
         // double  rotationVal = MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.stickDeadband) * (dampen.getAsBoolean() ? 0.2 : 1) * ((speedDial.getAsDouble() + 1) / 2);
 
-        double dampenFactor = dampenSupl.getAsBoolean() ? 0.2 : 1;
-        double speedDialFactor = ((speedDialSupl.getAsDouble() + 1) / 2);
-        double speedScale = dampenFactor * speedDialFactor;
+        // double dampenFactor = dampenSupl.getAsBoolean() ? 0.2 : 1;
+        // double speedDialFactor = ((speedDialSupl.getAsDouble() + 1) / 2);
+        // double speedScale = dampenFactor * speedDialFactor;
 
-        double translationVal = MathUtil.applyDeadband(translationSup.getAsDouble(), Constants.stickDeadband) * speedScale;
-        double strafeVal = MathUtil.applyDeadband(strafeSup.getAsDouble(), Constants.stickDeadband) * speedScale;
-        double rotationVal = MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.stickDeadband) * speedScale;
+        // double translationVal = MathUtil.applyDeadband(translationSup.getAsDouble(), Constants.stickDeadband) * speedScale;
+        // double strafeVal = MathUtil.applyDeadband(strafeSup.getAsDouble(), Constants.stickDeadband) * speedScale;
+        // double rotationVal = MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.stickDeadband) * speedScale;
+
+        double translationVal = MathUtil.applyDeadband(translationSup.getAsDouble(), Constants.stickDeadband);
+        double strafeVal = MathUtil.applyDeadband(strafeSup.getAsDouble(), Constants.stickDeadband);
+        double rotationVal = MathUtil.applyDeadband(rotationSup.getAsDouble(), Constants.stickDeadband);
        
         //heading direction state
         switch(States.driveState){
@@ -98,7 +102,7 @@ public class TeleopSwerve extends Command {
             new Translation2d(translationVal, strafeVal).times(SwerveConfig.maxSpeed), 
             rotationVal,
             !robotCentricSup.getAsBoolean(), 
-            false
+            true
         );
     }
 }

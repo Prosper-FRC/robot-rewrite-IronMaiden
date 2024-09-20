@@ -13,8 +13,6 @@
 
 package frc.robot;
 
-import java.lang.ref.PhantomReference;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -115,9 +113,8 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
 
-    PathPlannerPath path = PathPlannerPath.fromPathFile("Straight");
+    PathPlannerPath path = PathPlannerPath.fromPathFile("Example Path");
     return AutoBuilder.followPath(path);
-   // return new PathPlannerAuto("Straight");
   }
 
 
@@ -393,7 +390,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   // public Command getAutonomousCommand() {
-  //  // return autoChooser.get();
+  //   return autoChooser.get();
   // }
   // public Command getAutonomousCommand() {
   //  // return autoChooser.get();

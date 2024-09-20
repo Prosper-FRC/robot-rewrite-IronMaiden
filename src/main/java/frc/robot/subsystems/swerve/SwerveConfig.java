@@ -6,6 +6,7 @@ package frc.robot.subsystems.swerve;
 // import com.ctre.phoenix.sensors.SensorTimeBase;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.revrobotics.CANSparkBase.IdleMode;
 
 // import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -113,7 +114,7 @@ public class SwerveConfig
     /* Swerve Profiling Values */
     public static final double driveBaseRadius = Math.hypot(trackWidth / 2.0, trackWidth / 2.0);
     /** Meters per Second */
-    public static final double maxSpeed = Units.feetToMeters(17.1); // 4.0
+    public static final double maxSpeed = Units.feetToMeters(16.6); // 4.0
     /** Radians per Second */
     public static final double maxAngularVelocity = maxSpeed / driveBaseRadius;
    
@@ -129,6 +130,8 @@ public class SwerveConfig
         // canCoderConfig.sensorDirection = canCoderInvert;
         // canCoderConfig.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
         // canCoderConfig.sensorTimeBase = SensorTimeBase.PerSecond;
+          
+        canCoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
         canCoderConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1;
     }
 }
