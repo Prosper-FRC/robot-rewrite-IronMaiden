@@ -13,6 +13,8 @@
 
 package frc.robot;
 
+import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
@@ -55,6 +57,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.commands.*;
+import frc.robot.subsystems.swerve.Autonomous;
 // import frc.robot.subsystems.PoseEstimator;
 import frc.robot.subsystems.swerve.Swerve;
 import frc.robot.subsystems.arm.Arm;
@@ -68,7 +71,10 @@ import frc.robot.subsystems.arm.Arm;
 public class RobotContainer {
 
     /* Controllers */
-    private final SendableChooser<Command> autoChooser;
+    // private final SendableChooser<Command> autoChooser;
+
+    // #4
+    // private final LoggedDashboardChooser<Command> autoChooser;
 
     private final Joystick driver = new Joystick(Constants.kDriverControllerPort);
     public static boolean centric = false;
@@ -96,20 +102,20 @@ public class RobotContainer {
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
    // private final PoseEstimator s_PoseEstimator = new PoseEstimator();
+    private static Shooter shooter;
+    private static Intake intake;
+    private static Arm arm;
 
+    private static Autonomous autonomous;
 
-
-  // Subsystems
+// #1
+    // autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
 
   // Controller
   private static final CommandXboxController driverController =
       new CommandXboxController(Constants.kDriverControllerPort);
   private static final CommandXboxController operatorController =
       new CommandXboxController(Constants.kOperatorControllerPort);
-
-  private static Shooter shooter;
-  private static Intake intake;
-  private static Arm arm;
 
   public Command getAutonomousCommand() {
 
@@ -136,16 +142,19 @@ public class RobotContainer {
             )
         );
 
-        shooter = new Shooter();
+        shooter = new Shooter(intake);
         intake = new Intake();
         arm = new Arm();
 
-        autoChooser = AutoBuilder.buildAutoChooser();
+        autonomous = new Autonomous(intake, shooter, s_Swerve);
+
+        // #2
+       // autoChooser = AutoBuilder.buildAutoChooser();
 
      //   NamedCommands.registerCommand("straightPath", getAutonomousCommand());
 
-
-        SmartDashboard.putData("Auto Chooser", autoChooser);
+        // #3
+       // SmartDashboard.putData("Auto Chooser", autoChooser);
 
 
         // Configure the button bindings

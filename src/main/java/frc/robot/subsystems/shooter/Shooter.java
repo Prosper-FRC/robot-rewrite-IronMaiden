@@ -15,16 +15,22 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 // import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.intake.Intake;
 
 public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
  // private Intake intake;
 
+  private Intake intake;
+  
   private CANSparkMax leftShootMotor;
   private CANSparkMax rightShootMotor;
 
-  public Shooter(/*Intake intake*/) {
+  public Shooter(Intake intake) {
     // this.intake = intake;
+
+    this.intake = intake;
+
     leftShootMotor = new CANSparkMax(ShooterConstants.k_leftShootMotorID, MotorType.kBrushless);
     rightShootMotor = new CANSparkMax(ShooterConstants.k_rightShootMotorID, MotorType.kBrushless);
 
@@ -33,6 +39,13 @@ public class Shooter extends SubsystemBase {
 
     configure(leftShootMotor);
     configure(rightShootMotor);
+  }
+ // Sequential command to shoot speaker
+  public Command shootSpeaker() {
+    return new SequentialCommandGroup(
+        new InstantCommand(() -> setSpeakerSpeed()),
+        new WaitCommand(1.0),
+        new InstantCommand(() -> intake.intake()));
   }
 
   // Set motor speeds to the speed needed to score Speaker

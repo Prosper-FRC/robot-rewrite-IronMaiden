@@ -133,6 +133,7 @@ public class Swerve extends SubsystemBase {
 
 
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
+        // ChassisSpeeds.discretize(getSpeeds(), rotation)
         ChassisSpeeds desiredChassisSpeeds =
         fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(
         translation.getX(),
