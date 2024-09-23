@@ -4,13 +4,18 @@
 
 package frc.robot.subsystems.swerve;
 
+import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.BooleanSubscriber;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -29,6 +34,7 @@ public class Autonomous extends SubsystemBase {
   private final Shooter shooter;
   private final Swerve drive;
 
+
   public Autonomous(Intake intake, Shooter shooter, Swerve drive) {
 
     this.intake = intake;
@@ -45,7 +51,10 @@ public class Autonomous extends SubsystemBase {
   // Pre-Loaded Shot
   public Command PL() {
     return new SequentialCommandGroup(
-        AutoBuilder.followPath(PathPlannerPath.fromPathFile("To Shoot1")), SHOOT());
+        new InstantCommand(() -> drive.drive(new Translation2d(0.2, 0.0), 0.0, false, true)).withTimeout(1.0),
+        new WaitCommand(0.1),
+        cancelDrive());
+       // AutoBuilder.followPath(PathPlannerPath.fromPathFile("To Shoot1")), SHOOT()
   }
   // PreLoad-Mobility
   public Command PL_MB() {
@@ -140,7 +149,7 @@ public class Autonomous extends SubsystemBase {
 
   public Command moveField(double x, double y, double sec) {
     // Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop
-    return new InstantCommand(() -> drive.drive(new Translation2d(x, y), 0, false, true)).withTimeout(sec);
+    return Commands.run(() -> drive.drive(new Translation2d(3, 0.0), 0, false, true), drive).withTimeout(1);
   }
 
 //   public Command rotate(double rot, double sec) {

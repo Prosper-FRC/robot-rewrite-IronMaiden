@@ -70,7 +70,7 @@ public class Swerve extends SubsystemBase {
         this::getSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
         this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
         new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-                new PIDConstants(4.0, 0.0, 0.0), // Translation PID constants
+                new PIDConstants(1.0, 0.0, 0.0), // Translation PID constants
                 new PIDConstants(0.5, 0.0, 0.0), // Rotation PID constants
                 SwerveConfig.maxSpeed, // Max module speed, in m/s
                 SwerveConfig.driveBaseRadius, // Drive base radius in meters. Distance from robot center to furthest module.
@@ -210,14 +210,14 @@ public class Swerve extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("yaw", gyro.getYaw().getValueAsDouble());
+       // SmartDashboard.putNumber("yaw", gyro.getYaw().getValueAsDouble());
         for(ISwerveModule mod : mSwerveMods) {
             // SmartDashboard.putNumber("REV Mod " + mod.getModuleNumber() + " Cancoder", mod.getCanCoder().getDegrees());
             // SmartDashboard.putNumber("REV Mod " + mod.getModuleNumber() + " Integrated", mod.getPosition().angle.getDegrees());
             // SmartDashboard.putNumber("REV Mod " + mod.getModuleNumber() + " Velocity", mod.getState().speedMetersPerSecond);    
             // SmartDashboard.putNumber("Abs encoder: " + mod.getModuleNumber(), mod.getCanCoder().getDegrees());
-            SmartDashboard.putNumber("Rev Mod: " + mod.getModuleNumber() + "Drive Amp ", mod.getDriveMotor().getOutputCurrent());
-            SmartDashboard.putNumber("Rev Mod: " + mod.getModuleNumber() + "Azimuth Amp ", mod.getAngleMotor().getOutputCurrent());
+            // SmartDashboard.putNumber("Rev Mod: " + mod.getModuleNumber() + "Drive Amp ", mod.getDriveMotor().getOutputCurrent());
+            // SmartDashboard.putNumber("Rev Mod: " + mod.getModuleNumber() + "Azimuth Amp ", mod.getAngleMotor().getOutputCurrent());
 
            // SmartDashboard.putData("haha", mod.getMo);
 
@@ -227,7 +227,7 @@ public class Swerve extends SubsystemBase {
 
         }
 
-        SmartDashboard.putBoolean("Robot centric", RobotContainer.centric);
+       // SmartDashboard.putBoolean("Robot centric", RobotContainer.centric);
     }
 
   

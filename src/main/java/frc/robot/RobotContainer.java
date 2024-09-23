@@ -20,6 +20,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -74,7 +75,7 @@ public class RobotContainer {
     // private final SendableChooser<Command> autoChooser;
 
     // #4
-    // private final LoggedDashboardChooser<Command> autoChooser;
+    private final SendableChooser<Command> autoChooser;
 
     private final Joystick driver = new Joystick(Constants.kDriverControllerPort);
     public static boolean centric = false;
@@ -119,8 +120,7 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
 
-    PathPlannerPath path = PathPlannerPath.fromPathFile("Example Path");
-    return AutoBuilder.followPath(path);
+    return autoChooser.getSelected();
   }
 
 
@@ -142,19 +142,29 @@ public class RobotContainer {
             )
         );
 
-        shooter = new Shooter(intake);
+      
         intake = new Intake();
+        shooter = new Shooter(intake);
         arm = new Arm();
 
         autonomous = new Autonomous(intake, shooter, s_Swerve);
 
-        // #2
-       // autoChooser = AutoBuilder.buildAutoChooser();
+        autoChooser = AutoBuilder.buildAutoChooser();
 
+        autoChooser.addOption("TEST NEW AUTON TIMED", autonomous.PL());
+        autoChooser.addOption("Mobility", autonomous.MOBILITY());
+        autoChooser.addOption("Mobility-Shoot", autonomous.SHOOT_MOBILITY());
+        autoChooser.addOption("2P-Mobility", autonomous.SHOOT_MOBILITY_LOAD());
+        autoChooser.addOption("Auto: Test", autonomous.test());
+        autoChooser.addOption("Mobility", autonomous.MOBILITY());
+        autoChooser.addOption("2P-Mobility", autonomous.SHOOT_MOBILITY_LOAD());
+        // #2
+        // autoChooser = AutoBuilder.buildAutoChooser();
+ 
      //   NamedCommands.registerCommand("straightPath", getAutonomousCommand());
 
         // #3
-       // SmartDashboard.putData("Auto Chooser", autoChooser);
+       SmartDashboard.putData("Auto Chooser", autoChooser);
 
 
         // Configure the button bindings
