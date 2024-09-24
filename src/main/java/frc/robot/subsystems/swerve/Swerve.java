@@ -8,6 +8,9 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 
+import frc.lib.util.swerveUtil.SwerveSetpoint;
+import frc.lib.util.swerveUtil.SwerveSetpointGenerator;
+
 import java.text.BreakIterator;
 
 import org.littletonrobotics.junction.Logger;
@@ -37,6 +40,13 @@ public class Swerve extends SubsystemBase {
     public ISwerveModule[] mSwerveMods;
     public Pigeon2 gyro;
 
+    private SwerveSetpoint currentSetpoint = new SwerveSetpoint(
+        new ChassisSpeeds(), new SwerveModuleState[] {
+            new SwerveModuleState(), new SwerveModuleState(),
+            new SwerveModuleState(), new SwerveModuleState()
+        });
+    private SwerveSetpointGenerator setpointGenerator;
+
     // WPILib
     StructArrayPublisher<SwerveModuleState> publisher = NetworkTableInstance.getDefault()
     .getStructArrayTopic("MyStates", SwerveModuleState.struct).publish();
@@ -49,7 +59,10 @@ public class Swerve extends SubsystemBase {
        Pigeon2Configuration PigeonConfig = new Pigeon2Configuration();
        gyro.getConfigurator().apply(PigeonConfig);
         
-     
+    setpointGenerator = SwerveSetpointGenerator.builder()
+    .kinematics(SwerveConfig.swerveKinematics)
+    .moduleLocations(SwerveConfig.kModuleTranslations)
+    .build();
 
         mSwerveMods = new ISwerveModule[] {
             new SwerveMod(0, SwerveConstants.Swerve.Mod0.constants),
@@ -146,12 +159,25 @@ public class Swerve extends SubsystemBase {
                 rotation);
         desiredChassisSpeeds = correctForDynamics(desiredChassisSpeeds);
 
+        
+
         SwerveModuleState[] swerveModuleStates = SwerveConfig.swerveKinematics.toSwerveModuleStates(desiredChassisSpeeds);
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, SwerveConfig.maxSpeed);
         
         for(ISwerveModule mod : mSwerveMods){
             mod.setDesiredState(swerveModuleStates[mod.getModuleNumber()], isOpenLoop);
         }
+
+        currentSetpoint = setpointGenerator.generateSetpoint(
+            SwerveConfig.MODULE_LIMITS, currentSetpoint, desiredChassisSpeeds, 0.02);
+
+        for (int i = 0; i < 4; i++) {
+            swerveModuleStates[i] = new SwerveModuleState(
+                currentSetpoint.moduleStates()[i].speedMetersPerSecond,
+                Math.abs(currentSetpoint.moduleStates()[i].speedMetersPerSecond / SwerveConfig.maxSpeed) < 0.01 ?
+                mSwerveMods[i].getCurrentState().angle : currentSetpoint.moduleStates()[i].angle
+            );
+        };
 
     }    
     /* Used by SwerveControllerCommand in Auto */
@@ -229,8 +255,6 @@ public class Swerve extends SubsystemBase {
 
        // SmartDashboard.putBoolean("Robot centric", RobotContainer.centric);
     }
-
-  
 
 
     

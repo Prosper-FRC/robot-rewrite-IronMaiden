@@ -14,6 +14,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import frc.lib.util.swerveUtil.COTSFalconSwerveConstants;
+import frc.lib.util.swerveUtil.ModuleLimits;
 
 
 public class SwerveConfig 
@@ -29,6 +30,10 @@ public class SwerveConfig
     public static final double drivePower = 1.0; // 0.1
     public static final double anglePower = 0.9; // 0.1
 
+    public static final double kMaxLinearAccelerationMPSS = 6.0;
+
+    public static final ModuleLimits MODULE_LIMITS =
+        new ModuleLimits(maxSpeed, kMaxLinearAccelerationMPSS, Math.toRadians(540.0));
 
     public static final boolean invertGyro = false; // Always ensure Gyro is CCW+ CW-
 
@@ -40,6 +45,12 @@ public class SwerveConfig
     public static final double wheelBase = Units.inchesToMeters(25.0); 
     public static final double wheelCircumference = chosenModule.wheelCircumference;
 
+    public static final Translation2d[] kModuleTranslations = new Translation2d[] {
+        new Translation2d(trackWidth / 2.0, trackWidth / 2.0),
+        new Translation2d(trackWidth / 2.0, -trackWidth / 2.0),
+        new Translation2d(-trackWidth / 2.0, trackWidth / 2.0),
+        new Translation2d(-trackWidth / 2.0, -trackWidth / 2.0)
+      };
 
     public static final double maxModuleSpeed = 4.5; // M/S
     

@@ -97,6 +97,8 @@ public class LogManager {
    * @param name The name of the log. Use / to create subdirectories, and keep names unique.
    * @param value the value to be logged.
    */
+
+   @Deprecated
   public static void addInt(String name, int value) {
     if (individualIntegerLogs.containsKey(name)) {
       individualIntegerLogs.get(name).append(value);
@@ -144,5 +146,6 @@ public class LogManager {
     for (int i = 0; i < booleanLogs.size(); i++) {
       booleanLogs.get(i).append(booleanValues.get(i).getAsBoolean());
     }
+    
   }
 }
