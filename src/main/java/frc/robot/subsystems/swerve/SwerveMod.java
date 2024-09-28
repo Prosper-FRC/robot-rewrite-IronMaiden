@@ -124,7 +124,7 @@ public class SwerveMod implements ISwerveModule
         mDriveMotor.setIdleMode(SwerveConfig.driveIdleMode); 
 
         // Untested acceleration limiter code:
-        mDriveMotor.setOpenLoopRampRate(9.0); // Takes in time in seconds to go from 0 to full throttle
+        mDriveMotor.setOpenLoopRampRate(0.25); // Takes in time in seconds to go from 0 to full throttle
 
         mDriveMotor.burnFlash();
     }
