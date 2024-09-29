@@ -99,9 +99,11 @@ public class SwerveMod implements ISwerveModule
         mAngleMotor.setSmartCurrentLimit(SwerveConfig.angleContinuousCurrentLimit);
         mAngleMotor.setSecondaryCurrentLimit(60);
        
+        
         mAngleMotor.setInverted(SwerveConfig.angleMotorInvert);
         mAngleMotor.setIdleMode(SwerveConfig.angleIdleMode);
        
+
         mAngleMotor.burnFlash();
        
     }
@@ -126,7 +128,9 @@ public class SwerveMod implements ISwerveModule
         // Untested acceleration limiter code:
         mDriveMotor.setOpenLoopRampRate(0.25); // Takes in time in seconds to go from 0 to full throttle
 
+        
         mDriveMotor.burnFlash();
+
     }
 
 

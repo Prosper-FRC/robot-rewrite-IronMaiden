@@ -48,6 +48,7 @@ public class Swerve extends SubsystemBase {
        // gyro.configFactoryDefault();
        Pigeon2Configuration PigeonConfig = new Pigeon2Configuration();
        gyro.getConfigurator().apply(PigeonConfig);
+       gyro.setYaw(0, 2.5);
         
      
 
