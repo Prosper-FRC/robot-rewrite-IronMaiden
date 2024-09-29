@@ -87,7 +87,7 @@ public class Autonomous extends SubsystemBase {
   }
 
   public Command MOBILITY() {
-    return new SequentialCommandGroup(cancel(), moveField(2.0, 0.0, 0.5));
+    return new SequentialCommandGroup(cancel(), moveField(0.0, -2.0, 0.5));
   }
 
   public Command SHOOT_MOBILITY() {
@@ -149,7 +149,7 @@ public class Autonomous extends SubsystemBase {
 
   public Command moveField(double x, double y, double sec) {
     // Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop
-    return Commands.run(() -> drive.drive(new Translation2d(3, 0.0), 0, false, true), drive).withTimeout(1);
+    return Commands.run(() -> drive.drive(new Translation2d(-3, 0.0), 0, false, true), drive).withTimeout(1);
   }
 
 //   public Command rotate(double rot, double sec) {

@@ -153,11 +153,12 @@ public class RobotContainer {
 
         autoChooser.addOption("TEST NEW AUTON TIMED", autonomous.PL());
         autoChooser.addOption("Mobility", autonomous.MOBILITY());
-        autoChooser.addOption("Mobility-Shoot", autonomous.SHOOT_MOBILITY());
+        autoChooser.addOption("Shoot-Mobility", autonomous.SHOOT_MOBILITY());
         autoChooser.addOption("2P-Mobility", autonomous.SHOOT_MOBILITY_LOAD());
         autoChooser.addOption("Auto: Test", autonomous.test());
         autoChooser.addOption("Mobility", autonomous.MOBILITY());
         autoChooser.addOption("2P-Mobility", autonomous.SHOOT_MOBILITY_LOAD());
+        autoChooser.addOption("SHOOT", autonomous.SHOOT());
         // #2
         // autoChooser = AutoBuilder.buildAutoChooser();
  
