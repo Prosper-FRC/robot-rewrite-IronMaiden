@@ -219,3 +219,4 @@ public class Arm extends SubsystemBase {
 
   public void shootAuto(double seconds) {}
 }
+

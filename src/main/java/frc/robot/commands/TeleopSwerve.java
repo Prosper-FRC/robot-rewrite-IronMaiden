@@ -28,7 +28,7 @@ public class TeleopSwerve extends Command {
 
     public TeleopSwerve(Swerve s_Swerve, DoubleSupplier translationSup, DoubleSupplier strafeSup, DoubleSupplier rotationSup, BooleanSupplier robotCentricSup, BooleanSupplier dampen, DoubleSupplier speedDial) {
         this.s_Swerve = s_Swerve;
-        addRequirements(s_Swerve);
+        
 
         rotationController = new PIDController(SwerveConfig.angleKP, SwerveConfig.angleKI, SwerveConfig.angleKD);
         rotationController.enableContinuousInput(-Math.PI, Math.PI);
@@ -41,6 +41,7 @@ public class TeleopSwerve extends Command {
         dampenSupl = dampen;
         speedDialSupl = speedDial;
 
+        addRequirements(s_Swerve);
         
     }
 

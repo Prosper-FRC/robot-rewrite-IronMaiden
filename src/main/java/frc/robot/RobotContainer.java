@@ -53,6 +53,7 @@ import frc.robot.subsystems.shooter.Shooter;
 // import frc.robot.auto.DriveDistance;
 
 import frc.robot.subsystems.intake.Intake;
+import frc.robot.subsystems.leds.LEDs;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 // import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -102,6 +103,7 @@ public class RobotContainer {
 
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
+    private static final LEDs leds = new LEDs();
    // private final PoseEstimator s_PoseEstimator = new PoseEstimator();
     private static Shooter shooter;
     private static Intake intake;
@@ -146,6 +148,8 @@ public class RobotContainer {
         intake = new Intake();
         shooter = new Shooter(intake);
         arm = new Arm();
+
+        leds.ladyChaser();
 
         autonomous = new Autonomous(intake, shooter, s_Swerve);
 
@@ -224,6 +228,8 @@ public class RobotContainer {
   // Bindings]-----------------------------------------------------------------------
 
   private void configureButtonBindings() {
+
+    driverController.rightBumper().onTrue(new InstantCommand(() -> leds.setLEDsPurple()));
 
     // right bumper intakes note and retracts to move note away from shooter wheels
     operatorController

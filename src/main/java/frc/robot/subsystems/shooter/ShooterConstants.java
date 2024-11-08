@@ -1,8 +1,8 @@
 package frc.robot.subsystems.shooter;
 
 public class ShooterConstants {
-  public static final int k_leftShootMotorID = 17;
-  public static final int k_rightShootMotorID = 16;
+  public static final int k_leftShootMotorID = 18;
+  public static final int k_rightShootMotorID = 24;
   public static final int k_smartCurrentLimit = 40;
   public static final double k_shootSpeaker = 1.0;
   public static final double k_shootAmp = 0.40;
