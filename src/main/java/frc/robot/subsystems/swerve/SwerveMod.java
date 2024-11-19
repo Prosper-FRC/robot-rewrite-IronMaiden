@@ -160,7 +160,7 @@ public class SwerveMod implements ISwerveModule
        
         if(isOpenLoop)
         {
-            double percentOutput = desiredState.speedMetersPerSecond / SwerveConfig.maxSpeed;
+            double percentOutput = desiredState.speedMetersPerSecond / 20;
             mDriveMotor.set(percentOutput);
             return;
         }
