@@ -21,7 +21,7 @@ public class ArmConstants {
   public static final double k_positionConversionFactor = k_armGearRatio;
   public static final double k_velocityConversionFactor = k_armGearRatio / 60.0; // dividing by 60 for 60 seconds in a minute - V = displacement/time
 
-  public static final double k_armP = 0.0; // 2.5 on REV ION, 25.0
+  public static final double k_armP = 25.0; // 2.5 on REV ION, 25.0
   public static final double k_armI = 0.0;
   public static final double k_armD = 0.0;
 

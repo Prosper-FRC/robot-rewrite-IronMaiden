@@ -143,6 +143,10 @@ public class Arm extends SubsystemBase {
     else armMotor.set(0.0);
   }
 
+  public void setSpeedManual(double speed) {
+    armMotor.set(speed);
+  }
+
   // Calculate the speed to move the arm up and down at the same speed (by taking into account
   // gravity)
   public double setFeedforward() {

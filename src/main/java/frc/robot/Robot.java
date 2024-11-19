@@ -11,9 +11,12 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
+import edu.wpi.first.wpilibj.AddressableLED;
+import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.lib.util.loggingUtil.LogManager;
@@ -28,6 +31,17 @@ public class Robot extends LoggedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+  // private static AddressableLED m_led;
+  // private static AddressableLEDBuffer m_ledBuffer;
+  // private double lastChange;
+  // private boolean on = true;
+  // private Color m_EyeColor = Color.kGreen;
+  // private Color m_BackgroundColor = Color.kPurple;
+  // private int m_Length;
+  // private int m_eyePosition = 0;
+  // private int m_scanDirection = 1;
+
+  // private Boolean blinking;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -40,22 +54,35 @@ public class Robot extends LoggedRobot {
 
     Logger.recordMetadata("ProjectName", Constants.projectName); // Set a metadata value
 
-if (isReal()) {
-    Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
-    Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
-    new PowerDistribution(1, ModuleType.kRev); // Enables power distribution logging
-} else {
+    Logger.addDataReceiver(new NT4Publisher());
+
+// if (isReal()) {
+//     Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
+//     Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
+//     new PowerDistribution(1, ModuleType.kRev); // Enables power distribution logging
+// } else {
   
-    setUseTiming(false); // Run as fast as possible
-    String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the user)
-    Logger.setReplaySource(new WPILOGReader(logPath)); // Read replay log
-    Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save outputs to a new log
-}
+//     setUseTiming(false); // Run as fast as possible
+//     String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the user)
+//     Logger.setReplaySource(new WPILOGReader(logPath)); // Read replay log
+//     Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save outputs to a new log
+// }
 
 // Logger.disableDeterministicTimestamps() // See "Deterministic Timestamps" in the "Understanding Data Flow" page
 Logger.start(); // Start logging! No more data receivers, replay sources, or metadata values may be added.
 
     m_robotContainer = new RobotContainer();
+
+    // m_led = new AddressableLED(1);
+    // // Reuse buffer
+    // // Default to a length of 60, start empty output
+    // // Length is expensive to set, so only set it once, then just update data
+    // m_ledBuffer = new AddressableLEDBuffer(30);
+    // m_led.setLength(m_ledBuffer.getLength());
+    // // Set the data
+    // m_led.setData(m_ledBuffer);
+    // m_led.start();
+    // m_led.setData(m_ledBuffer);
   }
 
   /**

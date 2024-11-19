@@ -205,8 +205,9 @@ public class RobotContainer {
         new InstantCommand(() -> shooter.setSpeakerSpeed()),
         new InstantCommand(() -> arm.goToShootPos()),
         new WaitCommand(1.0),
-        new InstantCommand(() -> intake.intake()));
+        new InstantCommand(() -> intake.outtake()));
         
+
   }
   
 
@@ -317,6 +318,15 @@ public class RobotContainer {
                   arm.goToClimbDownPos();
                 }));
 
+    // operatorController
+    //     .y()
+    //     .whileTrue(
+    //         new InstantCommand(
+    //             () -> {
+    //               arm.setSpeedManual(-1.0);
+    //             }))
+    //     .onFalse(new InstantCommand(() -> arm.setSpeed(0.0)));
+
     operatorController
         .b()
         .whileTrue(ampButtonBinding())
@@ -333,6 +343,15 @@ public class RobotContainer {
                 () -> {
                   arm.goToClimbUpPos();
                 }));
+
+    // operatorController
+    //     .a()
+    //     .whileTrue(
+    //         new InstantCommand(
+    //             () -> {
+    //               arm.setSpeedManual(1.0);
+    //             }))
+    //     .onFalse(new InstantCommand(() -> arm.setSpeed(0.0)));
 
     operatorController
         .x()
